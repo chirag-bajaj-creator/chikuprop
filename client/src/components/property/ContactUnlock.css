@@ -1,0 +1,97 @@
+/* ===========================
+   CONTACT UNLOCK — 3 States
+   Locked → Unlock → Revealed
+   =========================== */
+
+/* --- Unlocked state accent --- */
+.mag-contact--unlocked {
+  border-color: var(--success, #22c55e);
+  border-width: 2px;
+}
+
+.mag-contact__icon--success {
+  color: var(--success, #22c55e);
+}
+
+/* --- Clickable contact fields (unlocked) --- */
+.mag-contact__field--active {
+  text-decoration: none;
+  color: var(--neutral-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  border: 1px solid transparent;
+  border-radius: var(--radius-input);
+}
+
+.mag-contact__field--active:hover {
+  background: var(--gradient-subtle);
+  border-color: var(--primary-light);
+}
+
+.mag-contact__field--active span {
+  color: var(--neutral-dark);
+}
+
+/* --- Action buttons row --- */
+.mag-contact__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mag-contact__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-input);
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.mag-contact__btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.mag-contact__btn--call {
+  background: var(--gradient-button);
+  color: var(--white);
+}
+
+.mag-contact__btn--whatsapp {
+  background: #25d366;
+  color: var(--white);
+}
+
+/* --- Login / Unlock button --- */
+.mag-contact__login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 13px;
+  font-size: 13px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.mag-contact__login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- Error message --- */
+.mag-contact__error {
+  font-size: 12px;
+  color: var(--error, #ef4444);
+  text-align: center;
+  margin: 0;
+}

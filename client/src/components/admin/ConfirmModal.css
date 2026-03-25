@@ -1,0 +1,84 @@
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 20px;
+}
+
+.admin-modal {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.admin-modal__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 8px;
+}
+
+.admin-modal__message {
+  font-size: 14px;
+  color: #64748B;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.admin-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.admin-modal__btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', system-ui, sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-modal__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-modal__btn--cancel {
+  background: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #E2E8F0;
+}
+
+.admin-modal__btn--cancel:hover:not(:disabled) {
+  background: #E2E8F0;
+}
+
+.admin-modal__btn--danger {
+  background: #EF4444;
+  color: #FFFFFF;
+  border: none;
+}
+
+.admin-modal__btn--danger:hover:not(:disabled) {
+  background: #DC2626;
+}
+
+.admin-modal__btn--success {
+  background: #10B981;
+  color: #FFFFFF;
+  border: none;
+}
+
+.admin-modal__btn--success:hover:not(:disabled) {
+  background: #059669;
+}

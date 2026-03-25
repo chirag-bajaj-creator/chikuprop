@@ -1,0 +1,97 @@
+/* Toolbar — search + filter side by side */
+.admin-properties-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.admin-properties-toolbar .admin-search-bar {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.admin-filter-select {
+  padding: 12px 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  color: #0F172A;
+  background: #FFFFFF;
+  cursor: pointer;
+  min-width: 160px;
+  transition: border-color 0.2s;
+}
+
+.admin-filter-select:focus {
+  outline: none;
+  border-color: #3B82F6;
+}
+
+/* Title cell with city subtitle */
+.admin-table__title-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-table__city {
+  font-size: 12px;
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+/* Vendor cell */
+.admin-table__vendor {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-table__vendor-email {
+  font-size: 12px;
+  color: #94A3B8;
+}
+
+/* Action buttons group */
+.admin-actions-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Extra button colors */
+.admin-action-btn--yellow {
+  background: transparent;
+  color: #D97706;
+  border: 1px solid #D97706;
+}
+
+.admin-action-btn--yellow:hover {
+  background: #FEF3C7;
+}
+
+.admin-action-btn--orange {
+  background: transparent;
+  color: #EA580C;
+  border: 1px solid #EA580C;
+}
+
+.admin-action-btn--orange:hover {
+  background: #FED7AA;
+}
+
+@media (max-width: 768px) {
+  .admin-properties-toolbar {
+    flex-direction: column;
+  }
+
+  .admin-filter-select {
+    min-width: unset;
+  }
+
+  .admin-actions-group {
+    flex-direction: column;
+  }
+}

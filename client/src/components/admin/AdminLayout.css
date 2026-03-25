@@ -1,0 +1,238 @@
+/* Admin design tokens — scoped to .admin-root */
+.admin-root {
+  --admin-sidebar-bg: #1E293B;
+  --admin-sidebar-text: #94A3B8;
+  --admin-sidebar-active: #334155;
+  --admin-sidebar-accent: #3B82F6;
+  --admin-topbar-bg: #FFFFFF;
+  --admin-content-bg: #F8FAFC;
+  --admin-text-primary: #0F172A;
+  --admin-text-secondary: #64748B;
+  --admin-border: #E2E8F0;
+  --admin-radius: 8px;
+  --admin-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --admin-blue: #3B82F6;
+  --admin-green: #10B981;
+  --admin-red: #EF4444;
+  --admin-amber: #F59E0B;
+  --admin-purple: #8B5CF6;
+  --admin-pink: #EC4899;
+  --admin-font: 'Inter', system-ui, -apple-system, sans-serif;
+
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--admin-font);
+  background: var(--admin-content-bg);
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: var(--admin-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+}
+
+.admin-sidebar__logo {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-sidebar__logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.5px;
+}
+
+.admin-sidebar__logo-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--admin-sidebar-accent);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.admin-sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.admin-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--admin-sidebar-text);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.admin-sidebar__item:hover {
+  background: var(--admin-sidebar-active);
+  color: #FFFFFF;
+}
+
+.admin-sidebar__item--active {
+  background: var(--admin-sidebar-active);
+  color: #FFFFFF;
+  border-left-color: var(--admin-sidebar-accent);
+}
+
+.admin-sidebar__footer {
+  padding: 8px;
+}
+
+.admin-sidebar__divider {
+  height: 1px;
+  background: var(--admin-sidebar-active);
+  margin: 8px 8px;
+}
+
+.admin-sidebar__logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--admin-red);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--admin-font);
+  border: none;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+
+.admin-sidebar__logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Main content area */
+.admin-main {
+  flex: 1;
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Top bar */
+.admin-topbar {
+  height: 64px;
+  background: var(--admin-topbar-bg);
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-topbar__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--admin-text-primary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.admin-topbar__spacer {
+  flex: 1;
+}
+
+.admin-topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-topbar__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+}
+
+.admin-topbar__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--admin-blue);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Content */
+.admin-content {
+  padding: 24px;
+  flex: 1;
+}
+
+/* Overlay for mobile */
+.admin-sidebar-overlay {
+  display: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .admin-sidebar--open {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-topbar__hamburger {
+    display: block;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-topbar {
+    padding: 0 16px;
+  }
+}

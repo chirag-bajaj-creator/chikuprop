@@ -1,0 +1,204 @@
+.notfound-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 60px 20px;
+  position: relative;
+  overflow: hidden;
+  background: var(--gradient-subtle);
+}
+
+/* Floating background property icons */
+.notfound-bg-icons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.notfound-bg-icon {
+  position: absolute;
+  color: var(--primary);
+  opacity: 0.06;
+  animation: notfoundFloat 8s ease-in-out infinite;
+}
+
+.notfound-bg-icon--1 { top: 8%; left: 10%; font-size: 64px; animation-delay: 0s; }
+.notfound-bg-icon--2 { top: 15%; right: 12%; font-size: 48px; animation-delay: 1.2s; }
+.notfound-bg-icon--3 { top: 55%; left: 6%; font-size: 40px; animation-delay: 2.4s; }
+.notfound-bg-icon--4 { bottom: 20%; right: 8%; font-size: 56px; animation-delay: 0.8s; }
+.notfound-bg-icon--5 { bottom: 10%; left: 20%; font-size: 36px; animation-delay: 3s; }
+.notfound-bg-icon--6 { top: 35%; right: 5%; font-size: 72px; animation-delay: 1.8s; }
+.notfound-bg-icon--7 { bottom: 35%; left: 45%; font-size: 44px; animation-delay: 2s; }
+.notfound-bg-icon--8 { top: 5%; left: 55%; font-size: 52px; animation-delay: 0.5s; }
+
+@keyframes notfoundFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(8deg); }
+}
+
+/* Main content */
+.notfound-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 520px;
+}
+
+/* CSS house illustration */
+.notfound-house {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.notfound-house__roof {
+  width: 0;
+  height: 0;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 40px solid var(--primary);
+  opacity: 0.75;
+  position: relative;
+  z-index: 1;
+}
+
+.notfound-house__body {
+  width: 100px;
+  height: 60px;
+  background: var(--accent);
+  opacity: 0.65;
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 8px 0;
+  position: relative;
+}
+
+.notfound-house__door {
+  width: 20px;
+  height: 30px;
+  background: var(--primary-dark);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+}
+
+.notfound-house__window {
+  width: 18px;
+  height: 18px;
+  background: var(--white);
+  border-radius: 3px;
+  opacity: 0.7;
+  border: 2px solid var(--primary);
+  margin-bottom: 12px;
+}
+
+/* 404 heading */
+.notfound-code {
+  font-size: 120px;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--gradient-button);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -4px;
+  margin-bottom: 8px;
+}
+
+.notfound-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--neutral-dark);
+  margin-bottom: 12px;
+}
+
+.notfound-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--neutral-medium);
+  margin-bottom: 32px;
+}
+
+/* Action buttons */
+.notfound-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-button);
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.notfound-btn:hover {
+  transform: translateY(-2px);
+}
+
+.notfound-btn--primary {
+  background: var(--gradient-button);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(147, 51, 234, 0.25);
+}
+
+.notfound-btn--primary:hover {
+  box-shadow: 0 6px 24px rgba(147, 51, 234, 0.35);
+}
+
+.notfound-btn--secondary {
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary-light);
+  box-shadow: var(--shadow-card);
+}
+
+.notfound-btn--secondary:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .notfound-code {
+    font-size: 80px;
+    letter-spacing: -2px;
+  }
+
+  .notfound-title {
+    font-size: 20px;
+  }
+
+  .notfound-text {
+    font-size: 14px;
+  }
+
+  .notfound-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .notfound-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .notfound-bg-icon--6,
+  .notfound-bg-icon--7,
+  .notfound-bg-icon--8 {
+    display: none;
+  }
+}

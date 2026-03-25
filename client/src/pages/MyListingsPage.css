@@ -1,0 +1,218 @@
+.my-listings-page {
+  min-height: calc(100vh - 140px);
+}
+
+.my-listings-header {
+  background: var(--gradient-subtle);
+  padding: 32px 0;
+  border-bottom: 2px solid var(--neutral-light);
+}
+
+.my-listings-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.my-listings-header h1 {
+  margin-bottom: 4px;
+}
+
+.my-listings-subtitle {
+  color: var(--neutral-medium);
+  font-size: 15px;
+}
+
+.my-listings-add-btn {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.my-listings-content {
+  padding-top: 28px;
+  padding-bottom: 40px;
+}
+
+/* Stats bar */
+.my-listings-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.ml-stat-card {
+  flex: 1;
+  background: var(--secondary);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ml-stat-number {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--neutral-dark);
+}
+
+.ml-stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-medium);
+}
+
+/* Listings grid */
+.my-listings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Empty state */
+.my-listings-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
+  gap: 12px;
+}
+
+.my-listings-empty-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* CSS-only house illustration */
+.empty-house {
+  width: 32px;
+  height: 28px;
+  position: relative;
+  background: var(--primary-light);
+  border-radius: 0 0 4px 4px;
+}
+
+.empty-house::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -4px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 14px solid var(--primary);
+}
+
+.empty-house::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 14px;
+  background: var(--secondary);
+  border-radius: 2px 2px 0 0;
+}
+
+.my-listings-empty h3 {
+  color: var(--neutral-dark);
+}
+
+.my-listings-empty p {
+  color: var(--neutral-medium);
+  max-width: 320px;
+  margin-bottom: 8px;
+}
+
+/* Skeleton loading */
+.ml-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ml-skeleton-card {
+  background: var(--white);
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.ml-skeleton-thumb {
+  aspect-ratio: 16/9;
+  background: var(--neutral-light);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.ml-skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ml-skeleton-line {
+  height: 14px;
+  border-radius: 4px;
+  background: var(--neutral-light);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.ml-skeleton-line-short {
+  width: 60%;
+}
+
+.ml-skeleton-line-medium {
+  width: 80%;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .my-listings-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-listings-add-btn {
+    width: 100%;
+  }
+
+  .my-listings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ml-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-listings-stats {
+    gap: 10px;
+  }
+
+  .ml-stat-card {
+    padding: 14px 10px;
+  }
+
+  .ml-stat-number {
+    font-size: 22px;
+  }
+
+  .ml-stat-label {
+    font-size: 11px;
+  }
+}

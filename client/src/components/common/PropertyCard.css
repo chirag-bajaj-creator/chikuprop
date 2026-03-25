@@ -1,0 +1,221 @@
+/* Card — soft rounded shell with hard data emphasis */
+.property-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--neutral-light);
+}
+
+.property-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+}
+
+/* Image section — soft */
+.property-card__image {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+}
+
+.property-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.property-card:hover .property-card__image img {
+  transform: scale(1.04);
+}
+
+/* Badges — hard style, sharp corners */
+.property-card__type {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--gradient-card-accent);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: var(--radius-hard);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.property-card__featured {
+  position: absolute;
+  top: 44px;
+  right: 12px;
+  background: var(--warning);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: var(--radius-hard);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Heart save/unsave button */
+.property-card__heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--neutral-medium);
+  transition: transform 0.2s, color 0.2s;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.property-card__heart:hover {
+  transform: scale(1.15);
+  color: var(--error);
+}
+
+.property-card__heart--saved {
+  color: var(--error);
+}
+
+.property-card__heart--saved:hover {
+  color: var(--neutral-medium);
+}
+
+@keyframes heartBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.property-card__heart:active {
+  animation: heartBounce 0.2s ease;
+}
+
+/* Details — data-first, bold pricing */
+.property-card__details {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.property-card__price {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
+
+.property-card__price span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-medium);
+}
+
+.property-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--neutral-dark);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.property-card__location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--neutral-medium);
+  font-size: 13px;
+}
+
+/* Features row — hard divider, data emphasis */
+.property-card__features {
+  display: flex;
+  gap: 14px;
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 2px solid var(--neutral-light);
+}
+
+.property-card__features span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--neutral-dark);
+}
+
+/* Footer — tag + views */
+.property-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.property-card__tag {
+  background: var(--gradient-subtle);
+  color: var(--primary);
+  padding: 3px 10px;
+  border-radius: var(--radius-hard);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-card__views {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--neutral-medium);
+}
+
+/* List view (horizontal) */
+.property-card--list {
+  flex-direction: row;
+}
+
+.property-card--list .property-card__image {
+  width: 40%;
+  min-width: 280px;
+  aspect-ratio: auto;
+  height: 220px;
+}
+
+.property-card--list .property-card__details {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .property-card--list {
+    flex-direction: column;
+  }
+
+  .property-card--list .property-card__image {
+    width: 100%;
+    min-width: auto;
+    aspect-ratio: 16/10;
+    height: auto;
+  }
+}

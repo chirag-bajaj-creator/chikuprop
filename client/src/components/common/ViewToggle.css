@@ -1,0 +1,25 @@
+.view-toggle {
+  display: flex;
+  gap: 2px;
+  background: var(--neutral-light);
+  border-radius: var(--radius-hard);
+  padding: 3px;
+}
+
+.view-toggle button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-hard);
+  cursor: pointer;
+  color: var(--neutral-medium);
+  transition: all 0.2s;
+}
+
+.view-toggle button.active {
+  background: var(--gradient-button);
+  color: var(--white);
+}

@@ -1,0 +1,12 @@
+---
+paths:
+  - "server/**"
+---
+- All route handlers must use try-catch with proper error responses
+- Never return raw Mongoose documents — use .select() or .lean()
+- Business logic goes in controllers/ — keep route files thin
+- Auth middleware must be applied on every protected route
+- Always validate request.body before using it
+- Never trust req.params or req.query without sanitizing
+- Use process.env for secrets — never hardcode
+- Response format: { success: true, data: {} } or { success: false, error: "message" }

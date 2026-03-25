@@ -1,0 +1,158 @@
+/* Toolbar */
+.admin-grievances-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Grievance card list */
+.admin-grievances-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-grievance-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.admin-grievance-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.admin-grievance-card--skeleton {
+  padding: 24px;
+}
+
+.admin-grievance-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.admin-grievance-card__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-grievance-card__subject {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0 0 6px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.admin-grievance-card__subject:hover {
+  color: #3B82F6;
+}
+
+.admin-grievance-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #64748B;
+}
+
+.admin-grievance-card__separator {
+  color: #CBD5E1;
+}
+
+.admin-grievance-card__category {
+  font-weight: 600;
+  color: #8B5CF6;
+}
+
+.admin-grievance-card__right {
+  flex-shrink: 0;
+}
+
+/* Expanded body */
+.admin-grievance-card__body {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.admin-grievance-card__message {
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.admin-grievance-card__notes {
+  margin-top: 12px;
+  padding: 12px;
+  background: #F8FAFC;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #475569;
+}
+
+/* Actions row */
+.admin-grievance-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.admin-grievance-card__expand-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', system-ui, sans-serif;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #3B82F6;
+  border: 1px solid #3B82F6;
+  transition: background 0.2s;
+}
+
+.admin-grievance-card__expand-btn:hover {
+  background: #EFF6FF;
+}
+
+/* Extra action button colors */
+.admin-action-btn--blue {
+  background: transparent;
+  color: #3B82F6;
+  border: 1px solid #3B82F6;
+}
+
+.admin-action-btn--blue:hover {
+  background: #DBEAFE;
+}
+
+@media (max-width: 768px) {
+  .admin-grievance-card__header {
+    flex-direction: column;
+  }
+
+  .admin-grievance-card__meta {
+    font-size: 12px;
+  }
+
+  .admin-grievance-card__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-grievance-card__actions button {
+    text-align: center;
+  }
+}
