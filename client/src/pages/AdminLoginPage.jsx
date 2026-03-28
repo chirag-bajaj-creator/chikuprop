@@ -6,7 +6,7 @@ import { adminSignup } from "../services/authService";
 import "./AdminLoginPage.css";
 
 function AdminLoginPage() {
-  const { login, user, loading: authLoading } = useAuth();
+  const { login, user, loading: authLoading, openAuthModal } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -186,6 +186,16 @@ function AdminLoginPage() {
             <button type="submit" className="admin-login-submit" disabled={loading}>
               {loading ? <span className="admin-btn-spinner"></span> : "Sign In"}
             </button>
+
+            <p className="admin-forgot-link">
+              <button
+                type="button"
+                className="admin-forgot-link-btn"
+                onClick={() => openAuthModal("forgot")}
+              >
+                Forgot your password?
+              </button>
+            </p>
           </form>
         ) : (
           <form className="admin-login-form" onSubmit={handleSignupSubmit}>

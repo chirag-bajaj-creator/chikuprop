@@ -9,6 +9,8 @@ const {
   deleteAdminProperty,
   getGrievances,
   updateGrievanceStatus,
+  getAppointments,
+  updateAppointmentStatus,
 } = require("../controllers/adminController");
 const { protect, requireAdmin } = require("../middleware/auth");
 
@@ -30,5 +32,9 @@ router.delete("/properties/:id", deleteAdminProperty);
 // Grievance management
 router.get("/grievances", getGrievances);
 router.patch("/grievances/:id/status", updateGrievanceStatus);
+
+// Appointment management
+router.get("/appointments", getAppointments);
+router.patch("/appointments/:id/status", updateAppointmentStatus);
 
 module.exports = router;

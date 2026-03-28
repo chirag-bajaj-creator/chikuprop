@@ -10,11 +10,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: clamp(56px, 5vw, 68px);
 }
 
 .navbar-logo {
-  font-size: 26px;
+  font-size: clamp(20px, 1.5vw + 8px, 24px);
   font-weight: 800;
   color: var(--neutral-dark);
   letter-spacing: -0.5px;
@@ -277,31 +277,22 @@
 .navbar-more-btn {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 15px;
-  font-weight: 600;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   color: var(--neutral-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   background: none;
-  border: none;
+  border: 2px solid var(--neutral-light);
   cursor: pointer;
-  padding: 8px 0;
-  font-family: var(--font-family);
-  transition: color 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .navbar-more-btn:hover,
 .navbar-more-btn.active {
   color: var(--primary);
-}
-
-.navbar-more-icon {
-  transition: transform 0.2s;
-}
-
-.navbar-more-icon.rotated {
-  transform: rotate(180deg);
+  border-color: var(--primary-light);
+  background: var(--secondary);
 }
 
 .navbar-more-dropdown {
@@ -334,6 +325,22 @@
 .navbar-more-item.active {
   color: var(--primary);
   font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .navbar-links {
+    gap: 20px;
+  }
+
+  .navbar-links a {
+    font-size: 13px;
+    letter-spacing: 0.3px;
+  }
+
+  .navbar-more-btn {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* Hamburger — hidden on desktop */
@@ -379,7 +386,7 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 70px;
+    top: 100%;
     left: 0;
     right: 0;
     background: var(--white);

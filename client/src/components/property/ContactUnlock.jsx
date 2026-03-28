@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { FiPhone, FiMail, FiLock, FiUnlock } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
@@ -7,7 +6,7 @@ import { unlockContact, checkUnlockStatus } from "../../services/leadService";
 import "./ContactUnlock.css";
 
 function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const [contact, setContact] = useState(null);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(false);
@@ -116,13 +115,13 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
           <FiMail size={16} />
           <span>{maskedEmail}</span>
         </div>
-        <Link
-          to={`/login?redirect=${encodeURIComponent(`/property/${propertyId}`)}`}
+        <button
+          onClick={() => openAuthModal("login", `/property/${propertyId}`)}
           className="btn-primary mag-contact__login-btn"
         >
           <FiLock size={14} />
           Login to View Contact
-        </Link>
+        </button>
       </div>
     );
   }

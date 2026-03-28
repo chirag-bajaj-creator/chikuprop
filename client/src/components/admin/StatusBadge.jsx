@@ -6,6 +6,7 @@ const BADGE_MAP = {
   expired: "admin-badge--gray",
   flagged: "admin-badge--orange",
   rejected: "admin-badge--red",
+  approved: "admin-badge--green",
   pending: "admin-badge--yellow",
   "in-progress": "admin-badge--blue",
   resolved: "admin-badge--green",

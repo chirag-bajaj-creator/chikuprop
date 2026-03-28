@@ -1,21 +1,25 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useEffect } from "react";
 import Loader from "../common/Loader";
 
 function ProtectedRoute({ roles }) {
-  const { user, loading } = useAuth();
+  const { user, loading, openAuthModal } = useAuth();
   const location = useLocation();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      openAuthModal("login", location.pathname);
+    }
+  }, [user, loading, openAuthModal, location.pathname]);
 
   if (loading) {
     return <Loader />;
   }
 
   if (!user) {
-    // Use ?redirect= query param so LoginPage can read it — only safe relative paths
-    const safePath = location.pathname.startsWith("/") && !location.pathname.startsWith("//")
-      ? location.pathname : "/";
-    const redirectPath = `/login?redirect=${encodeURIComponent(safePath)}`;
-    return <Navigate to={redirectPath} replace />;
+    // Return null so user stays on same URL while modal opens
+    return null;
   }
 
   if (roles && !roles.includes(user.role)) {

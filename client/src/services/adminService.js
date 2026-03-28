@@ -63,3 +63,19 @@ export const updateGrievanceStatus = async (grievanceId, status) => {
   const response = await API.patch(`/admin/grievances/${grievanceId}/status`, { status });
   return response.data;
 };
+
+/**
+ * Get paginated list of appointments with optional status filter.
+ */
+export const getAppointments = async (params) => {
+  const response = await API.get("/admin/appointments", { params });
+  return response.data;
+};
+
+/**
+ * Update an appointment's status (approve/reject).
+ */
+export const updateAppointmentStatus = async (appointmentId, status, adminNotes) => {
+  const response = await API.patch(`/admin/appointments/${appointmentId}/status`, { status, adminNotes });
+  return response.data;
+};

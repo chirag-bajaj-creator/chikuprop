@@ -31,3 +31,12 @@ export const adminSignup = async ({ name, email, password, phone, secretKey }) =
   return response.data.data;
 };
 
+export const forgotPassword = async (email) => {
+  const response = await API.post("/auth/forgot-password", { email });
+  return response.data.data;
+};
+
+export const resetPassword = async (token, password) => {
+  const response = await API.post("/auth/reset-password", { token, password });
+  return response.data.data;
+};

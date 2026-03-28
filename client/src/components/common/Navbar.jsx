@@ -2,12 +2,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getUnreadCount } from "../../services/notificationService";
-import { FiBell, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
+import { FiBell, FiMenu, FiX } from "react-icons/fi";
 import "./Navbar.css";
 
 function Navbar() {
   const location = useLocation();
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, openAuthModal } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -115,8 +115,9 @@ function Navbar() {
               <button
                 className={`navbar-more-btn${isActive("/services") || isActive("/wanted") ? " active" : ""}`}
                 onClick={() => setMoreOpen(!moreOpen)}
+                aria-label="More menu"
               >
-                More <FiChevronDown size={14} className={`navbar-more-icon${moreOpen ? " rotated" : ""}`} />
+                <FiMenu size={20} />
               </button>
               {moreOpen && (
                 <div className="navbar-more-dropdown">
@@ -223,14 +224,12 @@ function Navbar() {
             </div>
             </>
           ) : (
-            <>
-              <Link to="/login" className="btn-secondary navbar-login-btn">
-                Login
-              </Link>
-              <Link to="/register" className="btn-primary navbar-register-btn">
-                Register
-              </Link>
-            </>
+            <button
+              className="btn-primary navbar-login-btn"
+              onClick={() => openAuthModal("login")}
+            >
+              Login
+            </button>
           )}
         </div>
       </div>

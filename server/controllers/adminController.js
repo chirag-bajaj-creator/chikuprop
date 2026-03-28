@@ -5,6 +5,7 @@ const Lead = require("../models/Lead");
 const Grievance = require("../models/Grievance");
 const SavedProperty = require("../models/SavedProperty");
 const RecentlyViewed = require("../models/RecentlyViewed");
+const Appointment = require("../models/Appointment");
 const { escapeRegex } = require("../utils/sanitize");
 const createNotification = require("../utils/createNotification");
 
@@ -348,6 +349,97 @@ const updateGrievanceStatus = async (req, res) => {
   }
 };
 
+// GET /api/admin/appointments — List appointments with filters + pagination
+const getAppointments = async (req, res) => {
+  try {
+    const { status, page = 1, limit = 20 } = req.query;
+    const safePage = Math.max(1, Math.floor(Number(page)) || 1);
+    const safeLimit = Math.min(50, Math.max(1, Math.floor(Number(limit)) || 20));
+    const skip = (safePage - 1) * safeLimit;
+
+    const filter = {};
+    if (status && ["pending", "approved", "rejected"].includes(status)) {
+      filter.status = status;
+    }
+
+    const [appointments, total] = await Promise.all([
+      Appointment.find(filter)
+        .populate("userId", "name email")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(safeLimit)
+        .lean(),
+      Appointment.countDocuments(filter),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: appointments,
+      pagination: {
+        page: safePage,
+        limit: safeLimit,
+        total,
+        pages: Math.ceil(total / safeLimit),
+      },
+    });
+  } catch (error) {
+    console.error("Get appointments error:", error);
+    res.status(500).json({ success: false, error: "Failed to fetch appointments" });
+  }
+};
+
+// PATCH /api/admin/appointments/:id/status — Approve or reject appointment
+const updateAppointmentStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, adminNotes } = req.body;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ success: false, error: "Invalid appointment ID" });
+    }
+
+    const validStatuses = ["pending", "approved", "rejected"];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, error: `Status must be one of: ${validStatuses.join(", ")}` });
+    }
+
+    const updateData = { status };
+    if (adminNotes && typeof adminNotes === "string") {
+      updateData.adminNotes = adminNotes.trim().slice(0, 1000);
+    }
+
+    const appointment = await Appointment.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true, runValidators: true }
+    )
+      .select("_id appointmentType status userId description")
+      .lean();
+
+    if (!appointment) {
+      return res.status(404).json({ success: false, error: "Appointment not found" });
+    }
+
+    // Notify user about appointment status change
+    if (appointment.userId) {
+      const typeLabel = appointment.appointmentType.replace("_", " ");
+      createNotification({
+        userId: appointment.userId,
+        type: "grievance_updated",
+        title: "Appointment Update",
+        message: `Your ${typeLabel} appointment has been ${status}`,
+        relatedId: appointment._id,
+        relatedModel: "Grievance",
+      });
+    }
+
+    res.status(200).json({ success: true, data: appointment });
+  } catch (error) {
+    console.error("Update appointment status error:", error);
+    res.status(500).json({ success: false, error: "Failed to update appointment status" });
+  }
+};
+
 module.exports = {
   getAdminStats,
   getUsers,
@@ -357,4 +449,6 @@ module.exports = {
   deleteAdminProperty,
   getGrievances,
   updateGrievanceStatus,
+  getAppointments,
+  updateAppointmentStatus,
 };

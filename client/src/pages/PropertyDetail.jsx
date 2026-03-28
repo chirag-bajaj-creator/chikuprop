@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { FiMapPin, FiEye, FiArrowLeft } from "react-icons/fi";
+import { FiMapPin, FiEye, FiArrowLeft, FiTag, FiStar } from "react-icons/fi";
 import { IoBedOutline } from "react-icons/io5";
 import { LuBath } from "react-icons/lu";
-import { BiArea } from "react-icons/bi";
+import { BiArea, BiBuildingHouse } from "react-icons/bi";
+import { MdOutlineMeetingRoom } from "react-icons/md";
 import Loader from "../components/common/Loader";
 import ErrorState from "../components/common/ErrorState";
 import ContactUnlock from "../components/property/ContactUnlock";
@@ -175,46 +176,53 @@ function PropertyDetail() {
 
             <div className="mag-block">
               <h2 className="mag-block__title">Details</h2>
-              <table className="mag-table">
-                <tbody>
-                  <tr>
-                    <td>Property Type</td>
-                    <td>{property.propertyType}</td>
-                  </tr>
-                  <tr>
-                    <td>Listing</td>
-                    <td>{property.listingType === "sale" ? "For Sale" : "For Rent"}</td>
-                  </tr>
-                  {property.furnishing && (
-                    <tr>
-                      <td>Furnishing</td>
-                      <td>{property.furnishing}</td>
-                    </tr>
-                  )}
-                  <tr>
-                    <td>Plan</td>
-                    <td>{property.planType}</td>
-                  </tr>
-                  {property.bedrooms > 0 && (
-                    <tr>
-                      <td>Bedrooms</td>
-                      <td>{property.bedrooms} BHK</td>
-                    </tr>
-                  )}
-                  {property.bathrooms > 0 && (
-                    <tr>
-                      <td>Bathrooms</td>
-                      <td>{property.bathrooms}</td>
-                    </tr>
-                  )}
-                  {property.areaSqft > 0 && (
-                    <tr>
-                      <td>Area</td>
-                      <td>{property.areaSqft} sq.ft</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <div className="mag-detail-grid">
+                <div className="mag-detail-card">
+                  <BiBuildingHouse size={22} className="mag-detail-card__icon" />
+                  <div className="mag-detail-card__label">Property Type</div>
+                  <div className="mag-detail-card__value">{property.propertyType}</div>
+                </div>
+                <div className="mag-detail-card">
+                  <FiTag size={22} className="mag-detail-card__icon" />
+                  <div className="mag-detail-card__label">Listing</div>
+                  <div className="mag-detail-card__value">
+                    {property.listingType === "sale" ? "For Sale" : "For Rent"}
+                  </div>
+                </div>
+                {property.furnishing && (
+                  <div className="mag-detail-card">
+                    <MdOutlineMeetingRoom size={22} className="mag-detail-card__icon" />
+                    <div className="mag-detail-card__label">Furnishing</div>
+                    <div className="mag-detail-card__value">{property.furnishing}</div>
+                  </div>
+                )}
+                <div className="mag-detail-card">
+                  <FiStar size={22} className="mag-detail-card__icon" />
+                  <div className="mag-detail-card__label">Plan</div>
+                  <div className="mag-detail-card__value">{property.planType}</div>
+                </div>
+                {property.bedrooms > 0 && (
+                  <div className="mag-detail-card">
+                    <IoBedOutline size={22} className="mag-detail-card__icon" />
+                    <div className="mag-detail-card__label">Bedrooms</div>
+                    <div className="mag-detail-card__value">{property.bedrooms} BHK</div>
+                  </div>
+                )}
+                {property.bathrooms > 0 && (
+                  <div className="mag-detail-card">
+                    <LuBath size={22} className="mag-detail-card__icon" />
+                    <div className="mag-detail-card__label">Bathrooms</div>
+                    <div className="mag-detail-card__value">{property.bathrooms}</div>
+                  </div>
+                )}
+                {property.areaSqft > 0 && (
+                  <div className="mag-detail-card">
+                    <BiArea size={22} className="mag-detail-card__icon" />
+                    <div className="mag-detail-card__label">Area</div>
+                    <div className="mag-detail-card__value">{property.areaSqft} sq.ft</div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {property.amenities?.length > 0 && (

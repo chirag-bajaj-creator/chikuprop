@@ -10,6 +10,7 @@ import RentPage from "./pages/RentPage";
 import PropertyDetail from "./pages/PropertyDetail";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AddPropertyPage from "./pages/AddPropertyPage";
 import MyListingsPage from "./pages/MyListingsPage";
 import EditPropertyPage from "./pages/EditPropertyPage";
@@ -24,6 +25,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminPropertiesPage from "./pages/AdminPropertiesPage";
 import AdminGrievancesPage from "./pages/AdminGrievancesPage";
+import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdvertisePage from "./pages/AdvertisePage";
 import GrievancesPage from "./pages/GrievancesPage";
@@ -31,6 +33,7 @@ import GrievanceWidget from "./components/common/GrievanceWidget";
 import NotFoundPage from "./pages/NotFoundPage";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 import HiddenRoute from "./components/auth/HiddenRoute";
+import AuthModal from "./components/auth/AuthModal";
 import "./App.css";
 
 function AppRoutes() {
@@ -48,6 +51,7 @@ function AppRoutes() {
           <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/advertise" element={<AdvertisePage />} />
           <Route path="/grievances" element={<GrievancesPage />} />
           <Route path="/add-property" element={<AddPropertyPage />} />
@@ -72,6 +76,7 @@ function AppRoutes() {
               <Route path="/admin/users" element={<AdminUsersPage />} />
               <Route path="/admin/properties" element={<AdminPropertiesPage />} />
               <Route path="/admin/grievances" element={<AdminGrievancesPage />} />
+              <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
             </Route>
           </Route>
 
@@ -79,8 +84,9 @@ function AppRoutes() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-      {!isAdminRoute && <GrievanceWidget />}
+      {location.pathname === "/" && <GrievanceWidget />}
       {!isAdminRoute && <Footer />}
+      <AuthModal />
     </>
   );
 }

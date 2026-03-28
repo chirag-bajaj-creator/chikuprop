@@ -116,10 +116,21 @@
   margin-top: -8px;
 }
 
-.forgot-password span {
-  color: var(--neutral-light);
-  cursor: not-allowed;
-  font-style: italic;
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-password-btn:hover {
+  color: var(--primary-dark);
 }
 
 .login-submit {

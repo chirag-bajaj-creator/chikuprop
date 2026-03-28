@@ -1,13 +1,13 @@
 /* Hero */
 .grievances__hero {
   background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
-  padding: 80px 20px 60px;
+  padding: clamp(48px, 6vw, 80px) 20px clamp(36px, 4vw, 60px);
   text-align: center;
 }
 
 .grievances__hero-title {
   color: var(--white);
-  font-size: 36px;
+  font-size: clamp(22px, 2.5vw + 8px, 34px);
   font-weight: 800;
   letter-spacing: -0.5px;
   margin-bottom: 12px;
@@ -161,6 +161,12 @@
   gap: 24px;
 }
 
+.grievances__cards--single {
+  grid-template-columns: 1fr;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 .grievance-card {
   background: var(--white);
   border-radius: var(--radius-card);
@@ -215,6 +221,201 @@
   right: 16px;
   font-size: 20px;
   color: #25d366;
+}
+
+/* Appointment Form */
+.appt-login-prompt,
+.appt-locked-notice {
+  text-align: center;
+  padding: 32px 20px;
+  background: var(--secondary);
+  border-radius: var(--radius-card);
+  color: var(--neutral-medium);
+  font-size: 15px;
+}
+
+.appt-pending-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: #fefce8;
+  border: 2px solid #fbbf24;
+  border-radius: var(--radius-card);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.appt-pending-notice__icon {
+  font-size: 28px;
+  color: #f59e0b;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.appt-pending-notice h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--neutral-dark);
+  margin-bottom: 4px;
+}
+
+.appt-pending-notice p {
+  font-size: 14px;
+  color: var(--neutral-medium);
+}
+
+.appt-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appt-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.appt-form__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--neutral-medium);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.appt-form__textarea {
+  padding: 12px 14px;
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-input);
+  font-family: var(--font-family);
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 120px;
+}
+
+.appt-form__textarea:focus {
+  border-color: var(--accent);
+}
+
+.appt-form__count {
+  text-align: right;
+  font-size: 12px;
+  color: var(--neutral-medium);
+}
+
+.appt-form__select {
+  padding: 10px 12px;
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-input);
+  font-family: var(--font-family);
+  font-size: 14px;
+  outline: none;
+  background: var(--white);
+  transition: border-color 0.2s;
+}
+
+.appt-form__select:focus {
+  border-color: var(--accent);
+}
+
+.appt-form__submit {
+  align-self: flex-start;
+}
+
+/* Appointment List */
+.appt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.appt-list__loading {
+  text-align: center;
+  color: var(--neutral-medium);
+}
+
+.appt-card {
+  background: var(--white);
+  border: 1px solid var(--neutral-light);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.appt-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.appt-status-icon {
+  font-size: 16px;
+}
+
+.appt-status-icon--approved {
+  color: #16a34a;
+}
+
+.appt-status-icon--rejected {
+  color: #ef4444;
+}
+
+.appt-status-icon--pending {
+  color: #f59e0b;
+}
+
+.appt-card__status {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-hard);
+}
+
+.appt-card__status--approved {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.appt-card__status--rejected {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.appt-card__status--pending {
+  background: #fefce8;
+  color: #f59e0b;
+}
+
+.appt-card__type {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: auto;
+}
+
+.appt-card__desc {
+  font-size: 14px;
+  color: var(--neutral-medium);
+  line-height: 1.6;
+}
+
+.appt-card__notes {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--neutral-light);
+  font-size: 13px;
+  color: var(--neutral-medium);
 }
 
 /* Popup */

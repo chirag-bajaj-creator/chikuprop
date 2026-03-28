@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { FiGrid, FiUsers, FiHome, FiMessageCircle, FiLogOut, FiMenu, FiX } from "react-icons/fi";
+import { FiGrid, FiUsers, FiHome, FiMessageCircle, FiCalendar, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import "./AdminLayout.css";
 
 function AdminLayout() {
@@ -37,6 +37,7 @@ function AdminLayout() {
     { to: "/admin/users", icon: <FiUsers size={20} />, label: "Users" },
     { to: "/admin/properties", icon: <FiHome size={20} />, label: "Properties" },
     { to: "/admin/grievances", icon: <FiMessageCircle size={20} />, label: "Grievances" },
+    { to: "/admin/appointments", icon: <FiCalendar size={20} />, label: "Appointments" },
   ];
 
   return (

@@ -27,12 +27,9 @@ API.interceptors.response.use(
 
     if (error.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem(TOKEN_KEY);
-      const currentPath = window.location.pathname;
-      // Only include redirect param for safe relative paths
-      const isSafePath = currentPath.startsWith("/") && !currentPath.startsWith("//")
-        && currentPath !== "/login" && currentPath !== "/register";
-      const redirect = isSafePath ? `?redirect=${encodeURIComponent(currentPath)}` : "";
-      window.location.href = `/login${redirect}`;
+      window.dispatchEvent(new CustomEvent("auth:unauthorized", {
+        detail: { path: window.location.pathname }
+      }));
     }
     return Promise.reject(error);
   }

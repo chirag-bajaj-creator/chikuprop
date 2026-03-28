@@ -6,6 +6,8 @@
   padding: 10px;
   max-width: 620px;
   margin: 0 auto;
+  position: relative;
+  z-index: 500;
 }
 
 /* Hard toggle buttons — sharp, uppercase */
@@ -39,6 +41,7 @@
 .search-input-group {
   display: flex;
   gap: 8px;
+  position: relative;
 }
 
 .search-input-group input {
@@ -79,8 +82,117 @@
   box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
 }
 
+/* City suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-input);
+  box-shadow: var(--shadow-card-hover);
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 600;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.search-suggestion-item {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-dark);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.search-suggestion-item:hover {
+  background: var(--secondary);
+  color: var(--primary);
+}
+
+.suggestion-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align:left;
+}
+
+.suggestion-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.suggestion-type-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: var(--radius-hard);
+  white-space: nowrap;
+}
+
+.badge-state {
+  background: #ede9fe;
+  color: #6b21a8;
+}
+
+.badge-city {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-district {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.suggestion-state {
+  font-size: 11px;
+  color: var(--neutral-medium);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .search-input-group {
     flex-direction: column;
+  }
+
+  .search-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .suggestion-state {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .search-bar {
+    padding: 8px;
+  }
+
+  .search-toggle button {
+    padding: 8px;
+    font-size: 12px;
   }
 }

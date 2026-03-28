@@ -5,7 +5,7 @@ import { useToast } from "../context/ToastContext";
 import "./LoginPage.css";
 
 function LoginPage() {
-  const { login, user, loading: authLoading } = useAuth();
+  const { login, user, loading: authLoading, openAuthModal } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -129,7 +129,7 @@ function LoginPage() {
             </div>
           </div>
 
-          <p className="forgot-password">Forgot password? <span>Coming soon</span></p>
+          <p className="forgot-password">Forgot password? <button type="button" className="forgot-password-btn" onClick={() => openAuthModal("forgot")}>Reset it</button></p>
 
           <button
             type="submit"

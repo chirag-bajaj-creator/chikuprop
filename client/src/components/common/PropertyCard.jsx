@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiMapPin, FiEye, FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { IoBedOutline } from "react-icons/io5";
@@ -9,8 +9,7 @@ import { formatPrice } from "../../utils/formatPrice";
 import "./PropertyCard.css";
 
 function PropertyCard({ property, viewMode = "grid", isSaved = false, onToggleSave }) {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user, openAuthModal } = useAuth();
   const location = useLocation();
 
   const {
@@ -35,9 +34,7 @@ function PropertyCard({ property, viewMode = "grid", isSaved = false, onToggleSa
     e.preventDefault();
 
     if (!user) {
-      const safePath = location.pathname.startsWith("/") && !location.pathname.startsWith("//")
-        ? location.pathname : "/";
-      navigate(`/login?redirect=${encodeURIComponent(safePath)}`);
+      openAuthModal("login", location.pathname);
       return;
     }
 

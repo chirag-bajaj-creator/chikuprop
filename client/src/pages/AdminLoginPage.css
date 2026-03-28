@@ -177,6 +177,30 @@
   to { transform: rotate(360deg); }
 }
 
+.admin-forgot-link {
+  text-align: center;
+  font-size: 13px;
+  color: #64748B;
+  margin-top: 8px;
+}
+
+.admin-forgot-link-btn {
+  background: none;
+  border: none;
+  color: #2563EB;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.admin-forgot-link-btn:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   .admin-login-card {
     padding: 28px 20px;

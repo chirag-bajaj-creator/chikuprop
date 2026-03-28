@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaPhone,
   FaVideo,
   FaComments,
   FaTimes,
   FaWhatsapp,
+  FaCheckCircle,
+  FaClock,
+  FaTimesCircle,
 } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
+import { createAppointment, getMyAppointments } from "../services/appointmentService";
 import "./GrievancesPage.css";
+
+const APPOINTMENT_TYPES = [
+  { value: "audio_call", label: "Audio Call", icon: FaPhone, color: "#16a34a" },
+  { value: "video_call", label: "Video Call", icon: FaVideo, color: "#2563eb" },
+  { value: "chat", label: "Chat Bot", icon: FaComments, color: "#25d366" },
+];
 
 const CONTACT_CARDS = [
   {
     id: "audio",
     title: "Audio Call",
-    description: "Talk to our expert directly",
     icon: FaPhone,
     color: "#16a34a",
     action: "tel:+91987654321",
@@ -22,7 +33,6 @@ const CONTACT_CARDS = [
   {
     id: "video",
     title: "Video Call",
-    description: "Face-to-face consultation",
     icon: FaVideo,
     color: "#2563eb",
     action: "tel:+91987654321",
@@ -32,7 +42,6 @@ const CONTACT_CARDS = [
   {
     id: "chat",
     title: "Chat Bot",
-    description: "Chat with us on WhatsApp",
     icon: FaComments,
     color: "#25d366",
     action: "https://wa.me/91987654321?text=Hi%2C%20I%20need%20help%20with%20a%20property%20grievance",
@@ -42,15 +51,92 @@ const CONTACT_CARDS = [
 ];
 
 function GrievancesPage() {
+  const { user } = useAuth();
+  const { showToast } = useToast();
+
   const [activeCard, setActiveCard] = useState(null);
 
+  // Appointment form state
+  const [description, setDescription] = useState("");
+  const [appointmentType, setAppointmentType] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  // User's appointments
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppts, setLoadingAppts] = useState(false);
+
+  // Fetch user's appointments on mount
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    const fetchAppts = async () => {
+      try {
+        setLoadingAppts(true);
+        const res = await getMyAppointments();
+        if (!cancelled) setAppointments(res.data || []);
+      } catch {
+        // silent — not critical
+      } finally {
+        if (!cancelled) setLoadingAppts(false);
+      }
+    };
+
+    fetchAppts();
+    return () => { cancelled = true; };
+  }, [user]);
+
+  const approvedAppointment = appointments.find((a) => a.status === "approved");
+  const hasApprovedAppointment = !!approvedAppointment;
+  const hasPendingAppointment = appointments.some((a) => a.status === "pending");
+
+  // Map appointment type to contact card id
+  const APPT_TYPE_TO_CARD = { audio_call: "audio", video_call: "video", chat: "chat" };
+  const approvedCardId = approvedAppointment ? APPT_TYPE_TO_CARD[approvedAppointment.appointmentType] : null;
+
+  const handleSubmitAppointment = async (e) => {
+    e.preventDefault();
+
+    if (!description.trim() || description.trim().length < 20) {
+      showToast("Description must be at least 20 characters", "error");
+      return;
+    }
+    if (!appointmentType) {
+      showToast("Please select an appointment type", "error");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const res = await createAppointment({ description: description.trim(), appointmentType });
+      setAppointments((prev) => [res.data, ...prev]);
+      setDescription("");
+      setAppointmentType("");
+      showToast("Appointment request submitted! Waiting for admin approval.", "success");
+    } catch (err) {
+      const msg = err.response?.data?.error || "Failed to submit appointment";
+      showToast(msg, "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleCardClick = (card) => {
+    if (!hasApprovedAppointment) return;
     if (card.type === "whatsapp") {
       window.open(card.action, "_blank", "noopener,noreferrer");
     } else {
       setActiveCard(card);
     }
   };
+
+  const getStatusIcon = (status) => {
+    if (status === "approved") return <FaCheckCircle className="appt-status-icon appt-status-icon--approved" />;
+    if (status === "rejected") return <FaTimesCircle className="appt-status-icon appt-status-icon--rejected" />;
+    return <FaClock className="appt-status-icon appt-status-icon--pending" />;
+  };
+
+  const formatType = (type) => type.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   return (
     <div className="grievances">
@@ -121,36 +207,148 @@ function GrievancesPage() {
         </div>
       </section>
 
+      {/* Appointment Request Section */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Any Problem? We Are Here!</h2>
+          <h2 className="section-title">Book an Appointment</h2>
           <p className="grievances__cards-subtitle">
-            Choose how you want to connect with our grievance experts
+            Describe your issue and choose how you&apos;d like to connect. Admin will review and approve your request.
           </p>
-          <div className="grievances__cards">
-            {CONTACT_CARDS.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div
-                  key={card.id}
-                  className="grievance-card"
-                  onClick={() => handleCardClick(card)}
+
+          {!user ? (
+            <div className="appt-login-prompt">
+              <p>Please log in to book an appointment with our grievance experts.</p>
+            </div>
+          ) : hasPendingAppointment ? (
+            <div className="appt-pending-notice">
+              <FaClock className="appt-pending-notice__icon" />
+              <div>
+                <h3>Appointment Pending</h3>
+                <p>Your appointment request is being reviewed by our team. We&apos;ll notify you once it&apos;s approved.</p>
+              </div>
+            </div>
+          ) : !hasApprovedAppointment ? (
+            <form className="appt-form" onSubmit={handleSubmitAppointment}>
+              <div className="appt-form__group">
+                <label className="appt-form__label" htmlFor="appt-desc">
+                  Describe Your Issue
+                </label>
+                <textarea
+                  id="appt-desc"
+                  className="appt-form__textarea"
+                  placeholder="Explain your property grievance in detail (min 20 characters)..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={5}
+                  maxLength={2000}
+                />
+                <small className="appt-form__count">{description.length}/2000</small>
+              </div>
+
+              <div className="appt-form__group">
+                <label className="appt-form__label" htmlFor="appt-type">
+                  Appointment Type
+                </label>
+                <select
+                  id="appt-type"
+                  className="appt-form__select"
+                  value={appointmentType}
+                  onChange={(e) => setAppointmentType(e.target.value)}
                 >
-                  <div
-                    className="grievance-card__icon-wrap"
-                    style={{ background: card.color }}
-                  >
-                    <Icon className="grievance-card__icon" />
+                  <option value="">Select appointment type...</option>
+                  {APPOINTMENT_TYPES.map((t) => (
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="btn-primary appt-form__submit"
+                disabled={submitting}
+              >
+                {submitting ? "Submitting..." : "Request Appointment"}
+              </button>
+            </form>
+          ) : null}
+        </div>
+      </section>
+
+      {/* User's Appointments History */}
+      {user && appointments.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 className="section-title">Your Appointments</h2>
+            <div className="appt-list">
+              {loadingAppts ? (
+                <p className="appt-list__loading">Loading...</p>
+              ) : (
+                appointments.map((appt) => (
+                  <div key={appt._id} className="appt-card">
+                    <div className="appt-card__header">
+                      {getStatusIcon(appt.status)}
+                      <span className={`appt-card__status appt-card__status--${appt.status}`}>
+                        {appt.status.charAt(0).toUpperCase() + appt.status.slice(1)}
+                      </span>
+                      <span className="appt-card__type">{formatType(appt.appointmentType)}</span>
+                    </div>
+                    <p className="appt-card__desc">{appt.description}</p>
+                    {appt.adminNotes && (
+                      <p className="appt-card__notes">
+                        <strong>Admin:</strong> {appt.adminNotes}
+                      </p>
+                    )}
                   </div>
-                  <h3 className="grievance-card__title">{card.title}</h3>
-                  <p className="grievance-card__desc">{card.description}</p>
-                  {card.type === "whatsapp" && (
-                    <FaWhatsapp className="grievance-card__badge" />
-                  )}
-                </div>
-              );
-            })}
+                ))
+              )}
+            </div>
           </div>
+        </section>
+      )}
+
+      {/* Contact Cards — only visible after approval */}
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">Connect With Our Experts</h2>
+          {!hasApprovedAppointment ? (
+            <div className="appt-locked-notice">
+              <p>Communication options will be available once your appointment is approved by our team.</p>
+            </div>
+          ) : (
+            <>
+              <p className="grievances__cards-subtitle">
+                Your appointment is approved! Choose how you want to connect.
+              </p>
+              <div className="grievances__cards grievances__cards--single">
+                {CONTACT_CARDS.filter((card) => card.id === approvedCardId).map((card) => {
+                  const Icon = card.icon;
+                  return (
+                    <div
+                      key={card.id}
+                      className="grievance-card"
+                      onClick={() => handleCardClick(card)}
+                    >
+                      <div
+                        className="grievance-card__icon-wrap"
+                        style={{ background: card.color }}
+                      >
+                        <Icon className="grievance-card__icon" />
+                      </div>
+                      <h3 className="grievance-card__title">{card.title}</h3>
+                      <p className="grievance-card__desc">
+                        {card.type === "whatsapp" ? "Chat with us on WhatsApp" : "Talk to our expert directly"}
+                      </p>
+                      {card.type === "whatsapp" && (
+                        <FaWhatsapp className="grievance-card__badge" />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </section>
 

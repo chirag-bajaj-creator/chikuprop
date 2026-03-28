@@ -72,13 +72,35 @@
   color: var(--neutral-medium);
 }
 
+@media (max-width: 1024px) {
+  .footer-links {
+    gap: 36px;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
+    padding: 36px 20px;
   }
 
   .footer-links {
     flex-direction: column;
-    gap: 30px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    padding: 28px 16px;
+    gap: 28px;
+  }
+
+  .footer-brand h3 {
+    font-size: 20px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
   }
 }

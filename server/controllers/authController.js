@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const User = require("../models/User");
 
 const generateToken = (id) => {
@@ -191,4 +193,106 @@ const adminSignup = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getMe, adminSignup };
+// POST /api/auth/forgot-password
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email || typeof email !== "string") {
+      return res.status(400).json({ success: false, error: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+    // Store hashed token and expiry (15 minutes)
+    user.resetPasswordToken = resetTokenHash;
+    user.resetPasswordExpiry = new Date(Date.now() + 15 * 60 * 1000);
+    await user.save();
+
+    // Send email with reset link
+    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: "Password Reset Link - ChikuProp",
+      html: `
+        <p>Hi ${user.name},</p>
+        <p>You requested a password reset for your ChikuProp account.</p>
+        <p><a href="${resetLink}" style="color: #9333EA; font-weight: bold;">Click here to reset your password</a></p>
+        <p>This link expires in 15 minutes.</p>
+        <p>If you didn't request this, please ignore this email.</p>
+        <p>Best regards,<br/>ChikuProp Team</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      success: true,
+      data: { message: "Reset link sent to your email. Check your inbox." },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to send reset email" });
+  }
+};
+
+// POST /api/auth/reset-password
+const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ success: false, error: "Token and password are required" });
+    }
+
+    if (typeof token !== "string" || typeof password !== "string") {
+      return res.status(400).json({ success: false, error: "Invalid input" });
+    }
+
+    // Hash the token to compare
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    // Find user by token
+    const user = await User.findOne({
+      resetPasswordToken: tokenHash,
+      resetPasswordExpiry: { $gt: new Date() },
+    }).select("+password");
+
+    if (!user) {
+      return res.status(400).json({ success: false, error: "Invalid or expired reset link" });
+    }
+
+    // Update password
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: { message: "Password reset successfully. Please login with your new password." },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to reset password" });
+  }
+};
+
+module.exports = { signup, login, getMe, adminSignup, forgotPassword, resetPassword };

@@ -16,6 +16,7 @@ const grievanceRoutes = require("./routes/grievanceRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const wantedRoutes = require("./routes/wantedRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -54,6 +55,7 @@ app.use("/api/grievances", grievanceRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/wanted", wantedRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {

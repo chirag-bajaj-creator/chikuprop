@@ -9,7 +9,33 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem(TOKEN_KEY));
   const [loading, setLoading] = useState(true);
+  const [authModalView, setAuthModalView] = useState(null); // null | "login" | "register" | "forgot"
+  const [intendedPath, setIntendedPath] = useState(null);
   const navigate = useNavigate();
+
+  const openAuthModal = useCallback((view = "login", path = null) => {
+    setAuthModalView(view);
+    if (path) {
+      setIntendedPath(path);
+    }
+  }, []);
+
+  const closeAuthModal = useCallback(() => {
+    setAuthModalView(null);
+  }, []);
+
+  // Listen for 401 auth:unauthorized CustomEvent
+  useEffect(() => {
+    const handleUnauthorized = (event) => {
+      const path = event.detail?.path;
+      openAuthModal("login", path);
+    };
+
+    window.addEventListener("auth:unauthorized", handleUnauthorized);
+    return () => {
+      window.removeEventListener("auth:unauthorized", handleUnauthorized);
+    };
+  }, [openAuthModal]);
 
   // On mount, verify token by fetching current user
   useEffect(() => {
@@ -77,7 +103,7 @@ export function AuthProvider({ children }) {
     navigate("/");
   }, [navigate]);
 
-  const value = { user, token, loading, login, register, logout, refreshUser };
+  const value = { user, token, loading, login, register, logout, refreshUser, authModalView, openAuthModal, closeAuthModal, intendedPath, setIntendedPath };
 
   return (
     <AuthContext.Provider value={value}>

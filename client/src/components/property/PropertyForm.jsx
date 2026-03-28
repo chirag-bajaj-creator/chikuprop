@@ -41,7 +41,7 @@ const BEDROOM_OPTIONS = [1, 2, 3, 4, "5+"];
 const BATHROOM_OPTIONS = [1, 2, 3, "4+"];
 
 function PropertyForm({ mode = "add", initialData, onSubmitSuccess }) {
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -273,9 +273,6 @@ function PropertyForm({ mode = "add", initialData, onSubmitSuccess }) {
     }
   };
 
-  const handleLoginRedirect = (path) => {
-    navigate(`${path}?redirect=/add-property`);
-  };
 
   const formatIndianPrice = (num) => {
     if (!num) return "";
@@ -299,13 +296,13 @@ function PropertyForm({ mode = "add", initialData, onSubmitSuccess }) {
         <div className="pf-login-actions">
           <button
             className="btn-primary"
-            onClick={() => handleLoginRedirect("/login")}
+            onClick={() => openAuthModal("login", "/add-property")}
           >
             Sign In
           </button>
           <button
             className="btn-secondary"
-            onClick={() => handleLoginRedirect("/register")}
+            onClick={() => openAuthModal("register", "/add-property")}
           >
             Create Account
           </button>
