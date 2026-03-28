@@ -3,7 +3,7 @@ import axios from "axios";
 const TOKEN_KEY = "chikuprop_token";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.API_URL || "http://localhost:5000/api",
 });
 
 // Attach Bearer token to every request
