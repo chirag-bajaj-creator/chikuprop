@@ -464,13 +464,14 @@
 
   @keyframes slideIn {
     from {
-      width: 0;
-      left: 50%;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
     }
     to {
-      width: auto;
-      left: 24px;
+      opacity: 1;
+      transform: scaleX(1);
+      transform-origin: left;
     }
   }
-}
 }
