@@ -382,6 +382,27 @@
     display: none;
   }
 
+  /* Smooth menu animations */
+  @keyframes menuSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes menuItemFade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   .navbar-mobile-menu {
     display: flex;
     flex-direction: column;
@@ -390,23 +411,66 @@
     left: 0;
     right: 0;
     background: var(--white);
-    border-bottom: 2px solid var(--neutral-light);
-    box-shadow: var(--shadow-card);
+    border-bottom: 1px solid var(--neutral-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     z-index: 99;
-    padding: 8px 0;
+    padding: 6px 0;
+    animation: menuSlideDown 0.3s ease-out;
   }
 
   .navbar-mobile-menu a {
-    padding: 14px 24px;
+    padding: 13px 24px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--neutral-dark);
-    transition: background 0.15s, color 0.15s;
+    transition: all 0.25s ease;
+    position: relative;
+    animation: menuItemFade 0.35s ease-out;
+    animation-fill-mode: both;
   }
 
-  .navbar-mobile-menu a:hover,
+  /* Stagger fade for each item */
+  .navbar-mobile-menu a:nth-child(1) { animation-delay: 0.05s; }
+  .navbar-mobile-menu a:nth-child(2) { animation-delay: 0.1s; }
+  .navbar-mobile-menu a:nth-child(3) { animation-delay: 0.15s; }
+  .navbar-mobile-menu a:nth-child(4) { animation-delay: 0.2s; }
+  .navbar-mobile-menu a:nth-child(5) { animation-delay: 0.25s; }
+  .navbar-mobile-menu a:nth-child(6) { animation-delay: 0.3s; }
+
+  .navbar-mobile-menu a:hover {
+    background: var(--secondary);
+    color: var(--primary);
+    padding-left: 28px;
+  }
+
   .navbar-mobile-menu a.active {
     background: var(--secondary);
     color: var(--primary);
+    font-weight: 600;
   }
+
+  /* Smooth bottom accent on active */
+  .navbar-mobile-menu a.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      width: 0;
+      left: 50%;
+    }
+    to {
+      width: auto;
+      left: 24px;
+    }
+  }
+}
 }

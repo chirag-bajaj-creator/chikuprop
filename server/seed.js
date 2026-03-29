@@ -3,93 +3,214 @@ require("dotenv").config();
 const Property = require("./models/Property");
 const User = require("./models/User");
 
-// ── Indian cities with areas, states, and pincodes ──
+// ── Indian cities across all 29 states with areas and pincodes ──
 const LOCATIONS = [
+  // Maharashtra
   { city: "Mumbai", state: "Maharashtra", areas: [
     { area: "Andheri West", pincode: "400053" }, { area: "Bandra East", pincode: "400051" },
     { area: "Powai", pincode: "400076" }, { area: "Worli", pincode: "400018" },
     { area: "Malad West", pincode: "400064" }, { area: "Goregaon East", pincode: "400063" },
     { area: "Juhu", pincode: "400049" }, { area: "Borivali West", pincode: "400092" },
   ]},
-  { city: "Delhi", state: "Delhi", areas: [
-    { area: "Connaught Place", pincode: "110001" }, { area: "Dwarka", pincode: "110075" },
-    { area: "Rohini", pincode: "110085" }, { area: "Saket", pincode: "110017" },
-    { area: "Vasant Kunj", pincode: "110070" }, { area: "Lajpat Nagar", pincode: "110024" },
-    { area: "Greater Kailash", pincode: "110048" }, { area: "Pitampura", pincode: "110034" },
-  ]},
-  { city: "Bangalore", state: "Karnataka", areas: [
-    { area: "Koramangala", pincode: "560034" }, { area: "Whitefield", pincode: "560066" },
-    { area: "Indiranagar", pincode: "560038" }, { area: "HSR Layout", pincode: "560102" },
-    { area: "Electronic City", pincode: "560100" }, { area: "Jayanagar", pincode: "560011" },
-    { area: "Marathahalli", pincode: "560037" }, { area: "JP Nagar", pincode: "560078" },
-  ]},
-  { city: "Hyderabad", state: "Telangana", areas: [
-    { area: "Gachibowli", pincode: "500032" }, { area: "HITEC City", pincode: "500081" },
-    { area: "Banjara Hills", pincode: "500034" }, { area: "Kondapur", pincode: "500084" },
-    { area: "Madhapur", pincode: "500081" }, { area: "Jubilee Hills", pincode: "500033" },
-    { area: "Kukatpally", pincode: "500072" }, { area: "Shamshabad", pincode: "501218" },
-  ]},
   { city: "Pune", state: "Maharashtra", areas: [
     { area: "Hinjewadi", pincode: "411057" }, { area: "Kharadi", pincode: "411014" },
     { area: "Baner", pincode: "411045" }, { area: "Wakad", pincode: "411057" },
     { area: "Viman Nagar", pincode: "411014" }, { area: "Koregaon Park", pincode: "411001" },
-    { area: "Aundh", pincode: "411007" }, { area: "Hadapsar", pincode: "411028" },
   ]},
+  { city: "Nagpur", state: "Maharashtra", areas: [
+    { area: "Dharampeth", pincode: "440008" }, { area: "Sitabuldi", pincode: "440012" },
+    { area: "Civil Lines", pincode: "440001" }, { area: "Dakshin Gaon", pincode: "440009" },
+  ]},
+  // Delhi
+  { city: "Delhi", state: "Delhi", areas: [
+    { area: "Connaught Place", pincode: "110001" }, { area: "Dwarka", pincode: "110075" },
+    { area: "Rohini", pincode: "110085" }, { area: "Saket", pincode: "110017" },
+    { area: "Vasant Kunj", pincode: "110070" }, { area: "Lajpat Nagar", pincode: "110024" },
+  ]},
+  // Karnataka
+  { city: "Bangalore", state: "Karnataka", areas: [
+    { area: "Koramangala", pincode: "560034" }, { area: "Whitefield", pincode: "560066" },
+    { area: "Indiranagar", pincode: "560038" }, { area: "HSR Layout", pincode: "560102" },
+    { area: "Electronic City", pincode: "560100" }, { area: "Jayanagar", pincode: "560011" },
+  ]},
+  { city: "Mysore", state: "Karnataka", areas: [
+    { area: "Sayyaji Rao Road", pincode: "570001" }, { area: "Vijayanagar", pincode: "570009" },
+    { area: "Kuvempu Road", pincode: "570001" }, { area: "Nazarbad", pincode: "570004" },
+  ]},
+  // Telangana
+  { city: "Hyderabad", state: "Telangana", areas: [
+    { area: "Gachibowli", pincode: "500032" }, { area: "HITEC City", pincode: "500081" },
+    { area: "Banjara Hills", pincode: "500034" }, { area: "Kondapur", pincode: "500084" },
+    { area: "Jubilee Hills", pincode: "500033" }, { area: "Kukatpally", pincode: "500072" },
+  ]},
+  // Tamil Nadu
   { city: "Chennai", state: "Tamil Nadu", areas: [
     { area: "Anna Nagar", pincode: "600040" }, { area: "T Nagar", pincode: "600017" },
     { area: "Adyar", pincode: "600020" }, { area: "Velachery", pincode: "600042" },
     { area: "OMR", pincode: "600119" }, { area: "Porur", pincode: "600116" },
-    { area: "Sholinganallur", pincode: "600119" }, { area: "Nungambakkam", pincode: "600034" },
   ]},
+  { city: "Coimbatore", state: "Tamil Nadu", areas: [
+    { area: "RS Puram", pincode: "641002" }, { area: "Kovaipudur", pincode: "641042" },
+    { area: "Gandhipuram", pincode: "641012" }, { area: "Race Course", pincode: "641018" },
+  ]},
+  // West Bengal
   { city: "Kolkata", state: "West Bengal", areas: [
     { area: "Salt Lake", pincode: "700091" }, { area: "New Town", pincode: "700156" },
     { area: "Rajarhat", pincode: "700135" }, { area: "Alipore", pincode: "700027" },
     { area: "Ballygunge", pincode: "700019" }, { area: "Behala", pincode: "700034" },
-    { area: "Dum Dum", pincode: "700028" }, { area: "EM Bypass", pincode: "700107" },
   ]},
+  // Haryana
   { city: "Gurgaon", state: "Haryana", areas: [
     { area: "DLF Phase 3", pincode: "122002" }, { area: "Sector 56", pincode: "122011" },
     { area: "Sohna Road", pincode: "122018" }, { area: "Golf Course Road", pincode: "122002" },
-    { area: "MG Road", pincode: "122001" }, { area: "Sector 49", pincode: "122018" },
-    { area: "Nirvana Country", pincode: "122018" }, { area: "Sector 82", pincode: "122004" },
   ]},
+  { city: "Faridabad", state: "Haryana", areas: [
+    { area: "Sector 37", pincode: "121003" }, { area: "Sector 31", pincode: "121003" },
+    { area: "Charmwood", pincode: "121001" }, { area: "NIT", pincode: "121001" },
+  ]},
+  // Uttar Pradesh
   { city: "Noida", state: "Uttar Pradesh", areas: [
     { area: "Sector 62", pincode: "201301" }, { area: "Sector 137", pincode: "201305" },
     { area: "Sector 150", pincode: "201310" }, { area: "Sector 75", pincode: "201301" },
-    { area: "Sector 44", pincode: "201303" }, { area: "Sector 128", pincode: "201304" },
-    { area: "Greater Noida West", pincode: "201306" }, { area: "Sector 100", pincode: "201304" },
-  ]},
-  { city: "Ahmedabad", state: "Gujarat", areas: [
-    { area: "SG Highway", pincode: "380054" }, { area: "Prahlad Nagar", pincode: "380015" },
-    { area: "Bodakdev", pincode: "380054" }, { area: "Satellite", pincode: "380015" },
-    { area: "Vastrapur", pincode: "380015" }, { area: "Navrangpura", pincode: "380009" },
-    { area: "Thaltej", pincode: "380054" }, { area: "Bopal", pincode: "380058" },
-  ]},
-  { city: "Jaipur", state: "Rajasthan", areas: [
-    { area: "Malviya Nagar", pincode: "302017" }, { area: "Vaishali Nagar", pincode: "302021" },
-    { area: "Mansarovar", pincode: "302020" }, { area: "Tonk Road", pincode: "302015" },
-    { area: "C-Scheme", pincode: "302001" }, { area: "Jagatpura", pincode: "302017" },
-    { area: "Ajmer Road", pincode: "302006" }, { area: "Sirsi Road", pincode: "302012" },
   ]},
   { city: "Lucknow", state: "Uttar Pradesh", areas: [
     { area: "Gomti Nagar", pincode: "226010" }, { area: "Hazratganj", pincode: "226001" },
     { area: "Aliganj", pincode: "226024" }, { area: "Indira Nagar", pincode: "226016" },
-    { area: "Vikas Nagar", pincode: "226022" }, { area: "Sushant Golf City", pincode: "226030" },
   ]},
-  { city: "Chandigarh", state: "Chandigarh", areas: [
-    { area: "Sector 17", pincode: "160017" }, { area: "Sector 35", pincode: "160035" },
-    { area: "Sector 44", pincode: "160044" }, { area: "Sector 22", pincode: "160022" },
-    { area: "Manimajra", pincode: "160101" }, { area: "Zirakpur", pincode: "140603" },
+  { city: "Agra", state: "Uttar Pradesh", areas: [
+    { area: "Sadar Bazaar", pincode: "282001" }, { area: "Fatehabad Road", pincode: "282001" },
+    { area: "Kamla Nagar", pincode: "282005" }, { area: "Civil Lines", pincode: "282002" },
   ]},
+  // Gujarat
+  { city: "Ahmedabad", state: "Gujarat", areas: [
+    { area: "SG Highway", pincode: "380054" }, { area: "Prahlad Nagar", pincode: "380015" },
+    { area: "Bodakdev", pincode: "380054" }, { area: "Satellite", pincode: "380015" },
+  ]},
+  { city: "Surat", state: "Gujarat", areas: [
+    { area: "Vesu", pincode: "395007" }, { area: "Adajan", pincode: "395009" },
+    { area: "Pal", pincode: "395009" }, { area: "Urvashi Complex", pincode: "395002" },
+  ]},
+  // Rajasthan
+  { city: "Jaipur", state: "Rajasthan", areas: [
+    { area: "Malviya Nagar", pincode: "302017" }, { area: "Vaishali Nagar", pincode: "302021" },
+    { area: "Mansarovar", pincode: "302020" }, { area: "C-Scheme", pincode: "302001" },
+  ]},
+  // Madhya Pradesh
   { city: "Indore", state: "Madhya Pradesh", areas: [
     { area: "Vijay Nagar", pincode: "452010" }, { area: "Palasia", pincode: "452001" },
     { area: "AB Road", pincode: "452001" }, { area: "Super Corridor", pincode: "452010" },
-    { area: "Bhawarkua", pincode: "452001" }, { area: "Nipania", pincode: "452010" },
   ]},
+  { city: "Bhopal", state: "Madhya Pradesh", areas: [
+    { area: "Arera Colony", pincode: "462016" }, { area: "New Market", pincode: "462001" },
+    { area: "Habibganj", pincode: "462001" }, { area: "South TT Nagar", pincode: "462003" },
+  ]},
+  // Kerala
   { city: "Kochi", state: "Kerala", areas: [
     { area: "Edappally", pincode: "682024" }, { area: "Kakkanad", pincode: "682030" },
     { area: "Marine Drive", pincode: "682031" }, { area: "Vyttila", pincode: "682019" },
-    { area: "Aluva", pincode: "683101" }, { area: "Palarivattom", pincode: "682025" },
+  ]},
+  { city: "Thiruvananthapuram", state: "Kerala", areas: [
+    { area: "Pattom", pincode: "695004" }, { area: "Vazhuthacaud", pincode: "695014" },
+    { area: "Karamana", pincode: "695002" }, { area: "Vanchiyoor", pincode: "695035" },
+  ]},
+  // Chandigarh
+  { city: "Chandigarh", state: "Chandigarh", areas: [
+    { area: "Sector 17", pincode: "160017" }, { area: "Sector 35", pincode: "160035" },
+    { area: "Sector 44", pincode: "160044" }, { area: "Sector 22", pincode: "160022" },
+  ]},
+  // Punjab
+  { city: "Amritsar", state: "Punjab", areas: [
+    { area: "Ranjit Avenue", pincode: "143001" }, { area: "Cantonment", pincode: "143001" },
+    { area: "Mall Road", pincode: "143001" }, { area: "Krishna Nagar", pincode: "143002" },
+  ]},
+  { city: "Ludhiana", state: "Punjab", areas: [
+    { area: "Ferozepur Road", pincode: "141001" }, { area: "Sarabha Nagar", pincode: "141010" },
+    { area: "East Ludhiana", pincode: "141008" }, { area: "Gill Road", pincode: "141003" },
+  ]},
+  // Himachal Pradesh
+  { city: "Shimla", state: "Himachal Pradesh", areas: [
+    { area: "Lakkar Bazaar", pincode: "171001" }, { area: "The Mall", pincode: "171001" },
+    { area: "Chaura Maidan", pincode: "171002" }, { area: "Kasumpti", pincode: "171009" },
+  ]},
+  // Uttarakhand
+  { city: "Dehradun", state: "Uttarakhand", areas: [
+    { area: "Saharanpur Road", pincode: "248001" }, { area: "Paltan Bazaar", pincode: "248001" },
+    { area: "Rajpur Road", pincode: "248009" }, { area: "Clement Town", pincode: "248005" },
+  ]},
+  // Bihar
+  { city: "Patna", state: "Bihar", areas: [
+    { area: "Patna City", pincode: "800001" }, { area: "Boring Road", pincode: "800013" },
+    { area: "Kankarbagh", pincode: "800020" }, { area: "Rajendra Nagar", pincode: "800016" },
+  ]},
+  // Jharkhand
+  { city: "Ranchi", state: "Jharkhand", areas: [
+    { area: "Lalpur", pincode: "834001" }, { area: "Purulia Road", pincode: "834002" },
+    { area: "Doranda", pincode: "834002" }, { area: "Ashok Nagar", pincode: "834002" },
+  ]},
+  // Odisha
+  { city: "Bhubaneswar", state: "Odisha", areas: [
+    { area: "Patrapada", pincode: "751019" }, { area: "IRC Village", pincode: "751015" },
+    { area: "Kharavela Nagar", pincode: "751001" }, { area: "Dumduma", pincode: "751002" },
+  ]},
+  // Assam
+  { city: "Guwahati", state: "Assam", areas: [
+    { area: "Paltan Bazaar", pincode: "781001" }, { area: "Guwahati City", pincode: "781001" },
+    { area: "Uzanbazar", pincode: "781005" }, { area: "Bhangagarh", pincode: "781006" },
+  ]},
+  // Chhattisgarh
+  { city: "Raipur", state: "Chhattisgarh", areas: [
+    { area: "Shankar Nagar", pincode: "492007" }, { area: "Devendra Nagar", pincode: "492009" },
+    { area: "GE Road", pincode: "492001" }, { area: "Pandri", pincode: "492004" },
+  ]},
+  // Goa
+  { city: "Panaji", state: "Goa", areas: [
+    { area: "Panjim", pincode: "403001" }, { area: "Altinho", pincode: "403006" },
+    { area: "Ribandar", pincode: "403002" }, { area: "Miramar", pincode: "403001" },
+  ]},
+  // Tripura
+  { city: "Agartala", state: "Tripura", areas: [
+    { area: "Amar Nagar", pincode: "799001" }, { area: "Laxmi Nagar", pincode: "799001" },
+    { area: "Sukanta Path", pincode: "799005" }, { area: "BK Road", pincode: "799001" },
+  ]},
+  // Arunachal Pradesh
+  { city: "Itanagar", state: "Arunachal Pradesh", areas: [
+    { area: "Naharlagun", pincode: "791110" }, { area: "Itanagar City", pincode: "791111" },
+    { area: "Vivek Vihar", pincode: "791110" }, { area: "Lekhi", pincode: "791113" },
+  ]},
+  // Manipur
+  { city: "Imphal", state: "Manipur", areas: [
+    { area: "Keishamthong", pincode: "795001" }, { area: "Imphal City", pincode: "795001" },
+    { area: "Chingmeirong", pincode: "795008" }, { area: "Lamphelpat", pincode: "795010" },
+  ]},
+  // Meghalaya
+  { city: "Shillong", state: "Meghalaya", areas: [
+    { area: "Police Bazaar", pincode: "793001" }, { area: "Laitumkhrah", pincode: "793007" },
+    { area: "Nongkhadem", pincode: "793011" }, { area: "Mawkhar", pincode: "793003" },
+  ]},
+  // Mizoram
+  { city: "Aizawl", state: "Mizoram", areas: [
+    { area: "Aizawl City Center", pincode: "796001" }, { area: "Chanmari", pincode: "796005" },
+    { area: "Dawrpui", pincode: "796911" }, { area: "Sylhet", pincode: "796004" },
+  ]},
+  // Nagaland
+  { city: "Kohima", state: "Nagaland", areas: [
+    { area: "Kohima City", pincode: "797001" }, { area: "Near Zoo", pincode: "797001" },
+    { area: "Second Gate", pincode: "797001" }, { area: "Opposite Secretariat", pincode: "797001" },
+  ]},
+  // Sikkim
+  { city: "Gangtok", state: "Sikkim", areas: [
+    { area: "MG Marg", pincode: "737001" }, { area: "Gangtok City Center", pincode: "737001" },
+    { area: "Deorali", pincode: "737101" }, { area: "Ranipool", pincode: "737001" },
+  ]},
+  // Andhra Pradesh
+  { city: "Visakhapatnam", state: "Andhra Pradesh", areas: [
+    { area: "Visakhapatnam City", pincode: "530001" }, { area: "Gajuwaka", pincode: "530026" },
+    { area: "Dwarakanagar", pincode: "530020" }, { area: "Seethammapeta", pincode: "530013" },
+  ]},
+  // Haryana - additional city
+  { city: "Hisar", state: "Haryana", areas: [
+    { area: "City Center", pincode: "125001" }, { area: "New Garden", pincode: "125001" },
+    { area: "Rajendra Colony", pincode: "125001" }, { area: "HUDA City", pincode: "125001" },
   ]},
 ];
 
@@ -338,8 +459,8 @@ const seedDB = async () => {
 
     console.log(`Using vendor: ${user.name} (${user.email})`);
 
-    // Generate 1000 properties
-    const TOTAL = 1000;
+    // Generate 20000 properties
+    const TOTAL = 20000;
     const properties = [];
     for (let i = 0; i < TOTAL; i++) {
       properties.push(generateProperty(i, user._id));
