@@ -27,7 +27,9 @@ connectDB();
 // Middleware
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  "https://chikuprop.vercel.app",
   "http://localhost:5173",
+  "http://localhost:3000",
 ].filter(Boolean);
 
 app.use(cors({
@@ -39,6 +41,9 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(express.json());
 
