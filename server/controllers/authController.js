@@ -12,6 +12,15 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Verify transporter connection on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("Email transporter error:", error);
+  } else {
+    console.log("Email transporter ready:", success);
+  }
+});
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
@@ -243,8 +252,12 @@ const forgotPassword = async (req, res) => {
     };
 
     // Send email asynchronously (don't wait for it)
-    transporter.sendMail(mailOptions).catch((err) => {
-      console.error("Email send error:", err);
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error("Email send error for", user.email, ":", err);
+      } else {
+        console.log("Email sent successfully to", user.email, ":", info.response);
+      }
     });
 
     // Respond immediately to user
