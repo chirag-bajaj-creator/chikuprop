@@ -45,8 +45,8 @@ function ProfilePage() {
     if (!profileForm.email.trim() || !/^\S+@\S+\.\S+$/.test(profileForm.email.trim())) {
       errors.email = "Enter a valid email";
     }
-    if (profileForm.phone && !/^[6-9]\d{9}$/.test(profileForm.phone.trim())) {
-      errors.phone = "Enter a valid 10-digit phone number";
+    if (profileForm.phone && !/^[6-9]\d{8}$/.test(profileForm.phone.trim())) {
+      errors.phone = "Enter a valid 9-digit phone number";
     }
     return errors;
   };
@@ -236,7 +236,7 @@ function ProfilePage() {
                 type="text"
                 value={profileForm.phone}
                 onChange={handleProfileChange}
-                placeholder="10-digit Indian number"
+                placeholder="9-digit Indian number"
                 className={profileErrors.phone ? "input-error" : ""}
               />
               {profileErrors.phone && <span className="field-error">{profileErrors.phone}</span>}

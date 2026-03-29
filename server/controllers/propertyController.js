@@ -140,7 +140,7 @@ const createProperty = async (req, res) => {
       return res.status(400).json({ success: false, error: "Pincode must be exactly 6 digits" });
     }
     if (!contactPhone || !/^[6-9]\d{8}$/.test(contactPhone)) {
-      return res.status(400).json({ success: false, error: "Enter a valid 10-digit Indian phone number" });
+      return res.status(400).json({ success: false, error: "Enter a valid 9-digit Indian phone number" });
     }
     if (!contactEmail || !/^\S+@\S+\.\S+$/.test(contactEmail)) {
       return res.status(400).json({ success: false, error: "Enter a valid email address" });
@@ -297,7 +297,7 @@ const updateProperty = async (req, res) => {
 
     // Validate phone if provided
     if (req.body.contactPhone && !/^[6-9]\d{8}$/.test(req.body.contactPhone)) {
-      return res.status(400).json({ success: false, error: "Enter a valid 10-digit Indian phone number" });
+      return res.status(400).json({ success: false, error: "Enter a valid 9-digit Indian phone number" });
     }
 
     // Validate email if provided
