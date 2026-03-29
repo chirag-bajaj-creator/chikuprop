@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FiPhone, FiMail, FiLock, FiUnlock } from "react-icons/fi";
+import { FiPhone, FiMail, FiLock, FiUnlock, FiCalendar, FiClock } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { unlockContact, checkUnlockStatus } from "../../services/leadService";
@@ -11,6 +11,8 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState(null);
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
 
   // Check if already unlocked when user is logged in
   useEffect(() => {
@@ -57,26 +59,33 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
     }
   };
 
-  // State 3: Contact unlocked — show full details + action buttons
+  // State 3: Contact unlocked — show full details + action buttons + appointment
   if (contact) {
     return (
       <div className="mag-contact mag-contact--unlocked">
+        {/* Header */}
         <div className="mag-contact__header">
-          <FiUnlock size={16} className="mag-contact__icon--success" />
-          <span>Contact Unlocked</span>
+          <div className="mag-contact__header-top">
+            <FiUnlock size={16} className="mag-contact__icon--success" />
+            <span>Contact Unlocked</span>
+          </div>
           <h3>Get in Touch</h3>
         </div>
 
-        <a href={`tel:${contact.phone}`} className="mag-contact__field mag-contact__field--active">
-          <FiPhone size={16} />
-          <span>{contact.phone}</span>
-        </a>
+        {/* Contact Fields */}
+        <div className="mag-contact__contact-block">
+          <a href={`tel:${contact.phone}`} className="mag-contact__field mag-contact__field--active">
+            <FiPhone size={16} />
+            <span>{contact.phone}</span>
+          </a>
 
-        <a href={`mailto:${contact.email}`} className="mag-contact__field mag-contact__field--active">
-          <FiMail size={16} />
-          <span>{contact.email}</span>
-        </a>
+          <a href={`mailto:${contact.email}`} className="mag-contact__field mag-contact__field--active">
+            <FiMail size={16} />
+            <span>{contact.email}</span>
+          </a>
+        </div>
 
+        {/* Direct Actions */}
         <div className="mag-contact__actions">
           <a
             href={`tel:${contact.phone}`}
@@ -95,6 +104,40 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
             WhatsApp
           </a>
         </div>
+
+        {/* Appointment Section */}
+        <div className="mag-contact__divider"></div>
+
+        <div className="mag-contact__appointment">
+          <h4 className="mag-contact__appointment-title">
+            <FiCalendar size={14} />
+            Schedule a Visit
+          </h4>
+
+          <div className="mag-contact__appointment-grid">
+            <input
+              type="date"
+              value={appointmentDate}
+              onChange={(e) => setAppointmentDate(e.target.value)}
+              className="mag-contact__input"
+              min={new Date().toISOString().split("T")[0]}
+            />
+            <input
+              type="time"
+              value={appointmentTime}
+              onChange={(e) => setAppointmentTime(e.target.value)}
+              className="mag-contact__input"
+            />
+          </div>
+
+          <button
+            className="mag-contact__btn mag-contact__btn--appointment"
+            disabled={!appointmentDate || !appointmentTime}
+          >
+            <FiCalendar size={14} />
+            Book Appointment
+          </button>
+        </div>
       </div>
     );
   }
@@ -102,18 +145,23 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
   // State 1: Not logged in — show masked contact + login button
   if (!user) {
     return (
-      <div className="mag-contact">
+      <div className="mag-contact mag-contact--locked">
         <div className="mag-contact__header">
-          <span>Interested?</span>
+          <div className="mag-contact__header-top">
+            <FiLock size={16} className="mag-contact__icon--lock" />
+            <span>Interested?</span>
+          </div>
           <h3>Get in Touch</h3>
         </div>
-        <div className="mag-contact__field">
-          <FiPhone size={16} />
-          <span>{maskedPhone}</span>
-        </div>
-        <div className="mag-contact__field">
-          <FiMail size={16} />
-          <span>{maskedEmail}</span>
+        <div className="mag-contact__contact-block">
+          <div className="mag-contact__field">
+            <FiPhone size={16} />
+            <span>{maskedPhone}</span>
+          </div>
+          <div className="mag-contact__field">
+            <FiMail size={16} />
+            <span>{maskedEmail}</span>
+          </div>
         </div>
         <button
           onClick={() => openAuthModal("login", `/property/${propertyId}`)}
@@ -128,18 +176,23 @@ function ContactUnlock({ propertyId, maskedPhone, maskedEmail }) {
 
   // State 2: Logged in but not unlocked — show masked + unlock button
   return (
-    <div className="mag-contact">
+    <div className="mag-contact mag-contact--locked">
       <div className="mag-contact__header">
-        <span>Interested?</span>
+        <div className="mag-contact__header-top">
+          <FiLock size={16} className="mag-contact__icon--lock" />
+          <span>Interested?</span>
+        </div>
         <h3>Get in Touch</h3>
       </div>
-      <div className="mag-contact__field">
-        <FiPhone size={16} />
-        <span>{maskedPhone}</span>
-      </div>
-      <div className="mag-contact__field">
-        <FiMail size={16} />
-        <span>{maskedEmail}</span>
+      <div className="mag-contact__contact-block">
+        <div className="mag-contact__field">
+          <FiPhone size={16} />
+          <span>{maskedPhone}</span>
+        </div>
+        <div className="mag-contact__field">
+          <FiMail size={16} />
+          <span>{maskedEmail}</span>
+        </div>
       </div>
 
       {error && <p className="mag-contact__error">{error}</p>}
