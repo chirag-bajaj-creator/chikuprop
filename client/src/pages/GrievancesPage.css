@@ -1,6 +1,29 @@
+/* === SECTION TITLES === */
+.grievances .section-title {
+  font-size: clamp(24px, 2vw + 8px, 32px);
+  font-weight: 800;
+  color: var(--neutral-dark);
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.grievances .section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--gradient-button);
+  border-radius: 2px;
+}
+
 /* Hero */
 .grievances__hero {
-  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  background: linear-gradient(135deg, #9333EA 0%, #EC4899 50%, #F472B6 100%);
   padding: clamp(48px, 6vw, 80px) 20px clamp(36px, 4vw, 60px);
   text-align: center;
 }
@@ -25,7 +48,7 @@
   display: inline-block;
   padding: 8px 24px;
   background: var(--white);
-  color: #ef4444;
+  color: #9333EA;
   font-size: 14px;
   font-weight: 800;
   border-radius: 50px;
@@ -78,7 +101,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ef4444;
+  background: #9333EA;
 }
 
 /* Before / After */
@@ -117,13 +140,13 @@
 }
 
 .grievances__ba-card--before .grievances__ba-label {
-  background: #fef2f2;
-  color: #ef4444;
+  background: #F5F0FF;
+  color: #9333EA;
 }
 
 .grievances__ba-card--after .grievances__ba-label {
-  background: #f0fdf4;
-  color: #16a34a;
+  background: #F0FDF4;
+  color: #10B981;
 }
 
 .grievances__ba-img {
@@ -163,18 +186,19 @@
 
 .grievances__cards--single {
   grid-template-columns: 1fr;
-  max-width: 360px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
 .grievance-card {
-  background: var(--white);
+  background: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 100%);
+  border: 2px solid var(--primary-light);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  padding: 32px 24px;
+  box-shadow: 0 4px 20px rgba(147, 51, 234, 0.12);
+  padding: 36px 28px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
   position: relative;
   animation: stepFadeIn 0.4s ease-out backwards;
 }
@@ -184,22 +208,24 @@
 .grievance-card:nth-child(3) { animation-delay: 0.2s; }
 
 .grievance-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 32px rgba(147, 51, 234, 0.2);
+  border-color: var(--accent);
 }
 
 .grievance-card__icon-wrap {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
+  margin: 0 auto 18px;
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);
 }
 
 .grievance-card__icon {
-  font-size: 28px;
+  font-size: 32px;
   color: var(--white);
 }
 
@@ -213,6 +239,7 @@
 .grievance-card__desc {
   font-size: 14px;
   color: var(--neutral-medium);
+  line-height: 1.5;
 }
 
 .grievance-card__badge {
@@ -227,8 +254,9 @@
 .appt-login-prompt,
 .appt-locked-notice {
   text-align: center;
-  padding: 32px 20px;
-  background: var(--secondary);
+  padding: 32px 24px;
+  background: linear-gradient(135deg, #F5F0FF 0%, #FBF7FF 100%);
+  border: 2px solid var(--primary-light);
   border-radius: var(--radius-card);
   color: var(--neutral-medium);
   font-size: 15px;
@@ -239,11 +267,12 @@
   align-items: flex-start;
   gap: 16px;
   padding: 24px;
-  background: #fefce8;
-  border: 2px solid #fbbf24;
+  background: linear-gradient(135deg, #FEF9C3 0%, #FEFCE8 100%);
+  border: 2px solid #FCD34D;
   border-radius: var(--radius-card);
   max-width: 600px;
   margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
 }
 
 .appt-pending-notice__icon {
@@ -271,36 +300,44 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 50%, #FBF7FF 100%);
+  padding: 32px;
+  border-radius: var(--radius-card);
+  border: 2px solid var(--primary-light);
 }
 
 .appt-form__group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .appt-form__label {
   font-size: 11px;
   font-weight: 700;
-  color: var(--neutral-medium);
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .appt-form__textarea {
-  padding: 12px 14px;
-  border: 2px solid var(--neutral-light);
+  padding: 14px 16px;
+  border: 1.5px solid var(--primary-light);
   border-radius: var(--radius-input);
   font-family: var(--font-family);
   font-size: 14px;
   resize: vertical;
   outline: none;
-  transition: border-color 0.2s;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
   min-height: 120px;
+  color: var(--neutral-dark);
 }
 
 .appt-form__textarea:focus {
   border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
 }
 
 .appt-form__count {
@@ -310,22 +347,45 @@
 }
 
 .appt-form__select {
-  padding: 10px 12px;
-  border: 2px solid var(--neutral-light);
+  padding: 12px 14px;
+  border: 1.5px solid var(--primary-light);
   border-radius: var(--radius-input);
   font-family: var(--font-family);
   font-size: 14px;
   outline: none;
-  background: var(--white);
-  transition: border-color 0.2s;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--neutral-dark);
+  transition: all 0.3s ease;
 }
 
 .appt-form__select:focus {
   border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
 }
 
 .appt-form__submit {
   align-self: flex-start;
+  background: var(--gradient-button);
+  border: none;
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-button);
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.appt-form__submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(147, 51, 234, 0.3);
+}
+
+.appt-form__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Appointment List */
@@ -343,11 +403,16 @@
 }
 
 .appt-card {
-  background: var(--white);
-  border: 1px solid var(--neutral-light);
+  background: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 100%);
+  border: 2px solid var(--primary-light);
   border-radius: var(--radius-card);
   padding: 20px;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 2px 8px rgba(147, 51, 234, 0.08);
+  transition: all 0.3s ease;
+}
+
+.appt-card:hover {
+  box-shadow: 0 4px 16px rgba(147, 51, 234, 0.12);
 }
 
 .appt-card__header {
@@ -362,15 +427,15 @@
 }
 
 .appt-status-icon--approved {
-  color: #16a34a;
+  color: #10B981;
 }
 
 .appt-status-icon--rejected {
-  color: #ef4444;
+  color: #EF4444;
 }
 
 .appt-status-icon--pending {
-  color: #f59e0b;
+  color: #F59E0B;
 }
 
 .appt-card__status {
@@ -378,23 +443,23 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 2px 8px;
-  border-radius: var(--radius-hard);
+  padding: 4px 10px;
+  border-radius: var(--radius-input);
 }
 
 .appt-card__status--approved {
-  background: #f0fdf4;
-  color: #16a34a;
+  background: #D1FAE5;
+  color: #065F46;
 }
 
 .appt-card__status--rejected {
-  background: #fef2f2;
-  color: #ef4444;
+  background: #FEE2E2;
+  color: #7F1D1D;
 }
 
 .appt-card__status--pending {
-  background: #fefce8;
-  color: #f59e0b;
+  background: #FEF3C7;
+  color: #92400E;
 }
 
 .appt-card__type {
@@ -432,9 +497,10 @@
 }
 
 .grievance-popup {
-  background: var(--white);
+  background: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 100%);
+  border: 2px solid var(--primary-light);
   border-radius: var(--radius-modal);
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: 0 8px 32px rgba(147, 51, 234, 0.2);
   max-width: 360px;
   width: 100%;
   position: relative;
