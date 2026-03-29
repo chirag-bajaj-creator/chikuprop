@@ -26,6 +26,10 @@ const propertySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    projectName: {
+      type: String,
+      trim: true,
+    },
     price: {
       type: Number,
       required: true,

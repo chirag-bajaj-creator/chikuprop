@@ -73,7 +73,7 @@ function WantedPage() {
     <div className="wanted-page">
       <div className="wanted-page-header">
         <div className="container wanted-page-header-content">
-          <h1>Wanted Properties</h1>
+          <h1>Dream Home</h1>
           <p className="wanted-page-subtitle">
             Find what buyers and renters are looking for — {total} active requirements
           </p>
@@ -116,7 +116,7 @@ function WantedPage() {
         {/* Grid */}
         {properties.length === 0 ? (
           <div className="wanted-empty">
-            <h3>No wanted properties found</h3>
+            <h3>No dream home requests found</h3>
             <p>Be the first to post your requirement.</p>
             <Link to="/wanted/post" className="btn-primary">
               Post Your Requirement

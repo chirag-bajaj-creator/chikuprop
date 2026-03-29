@@ -94,7 +94,7 @@ function PostWantedPage() {
     <div className="post-wanted-page">
       <div className="post-wanted-header">
         <div className="container post-wanted-header-content">
-          <h1>Post Your Requirement</h1>
+          <h1>Post Your Dream Home</h1>
           <p className="post-wanted-subtitle">Tell sellers and landlords what you are looking for</p>
         </div>
       </div>

@@ -8,11 +8,13 @@ const {
   updateProperty,
   deleteProperty,
   togglePropertyStatus,
+  getSearchSuggestions,
 } = require("../controllers/propertyController");
 const { protect, optionalAuth } = require("../middleware/auth");
 
 // Public routes
 router.get("/", getProperties);
+router.get("/search-suggestions", getSearchSuggestions);
 
 // Protected routes — /my MUST come before /:id
 router.get("/my", protect, getMyProperties);

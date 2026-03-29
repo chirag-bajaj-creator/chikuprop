@@ -37,7 +37,7 @@ function Footer() {
             <h4>Browse</h4>
             <Link to="/buy">Buy Property</Link>
             <Link to="/rent">Rent Property</Link>
-            <Link to="/wanted">Wanted Properties</Link>
+            <Link to="/wanted">Dream Home</Link>
           </div>
           <div className="footer-col">
             <h4>For Vendors</h4>

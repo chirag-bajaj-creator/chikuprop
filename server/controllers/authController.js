@@ -4,8 +4,11 @@ const nodemailer = require("nodemailer");
 const User = require("../models/User");
 
 // Create reusable transporter once (not on every request)
+// Using Brevo SMTP (works on Render, unlike Gmail)
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: process.env.SMTP_HOST || "smtp-relay.brevo.com",
+  port: process.env.SMTP_PORT || 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,

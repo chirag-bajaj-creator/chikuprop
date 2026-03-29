@@ -297,14 +297,14 @@ function BuyerDashboardPage() {
                     ))}
                   </div>
                   <Link to="/wanted" className="btn-secondary matching-view-all">
-                    View All Wanted Properties
+                    View All Dream Homes
                   </Link>
                 </>
               ) : (
                 <div className="dashboard-matching__empty">
                   <p>No matching buyers yet. When someone posts a requirement that fits your listings, they'll appear here.</p>
                   <Link to="/wanted" className="btn-secondary">
-                    Browse Wanted Properties
+                    Browse Dream Homes
                   </Link>
                 </div>
               )}

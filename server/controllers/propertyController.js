@@ -41,6 +41,7 @@ const getProperties = async (req, res) => {
         { description: { $regex: safeSearch, $options: "i" } },
         { "location.city": { $regex: safeSearch, $options: "i" } },
         { "location.area": { $regex: safeSearch, $options: "i" } },
+        { projectName: { $regex: safeSearch, $options: "i" } },
       ];
     }
 
@@ -378,6 +379,45 @@ const togglePropertyStatus = async (req, res) => {
   }
 };
 
+// GET /api/properties/search-suggestions — grouped search suggestions from DB
+const getSearchSuggestions = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q || q.trim().length < 2) {
+      return res.status(200).json({ success: true, data: { projects: [], localities: [], cities: [] } });
+    }
+
+    const safeQuery = escapeRegex(q.trim());
+    const regex = new RegExp(safeQuery, "i");
+    const activeFilter = { status: "active" };
+
+    const [projects, localities, cities] = await Promise.all([
+      Property.aggregate([
+        { $match: { ...activeFilter, projectName: { $regex: regex } } },
+        { $group: { _id: { name: "$projectName", city: "$location.city" } } },
+        { $limit: 5 },
+        { $project: { _id: 0, name: "$_id.name", city: "$_id.city" } },
+      ]),
+      Property.aggregate([
+        { $match: { ...activeFilter, "location.area": { $regex: regex } } },
+        { $group: { _id: { area: "$location.area", city: "$location.city" } } },
+        { $limit: 5 },
+        { $project: { _id: 0, area: "$_id.area", city: "$_id.city" } },
+      ]),
+      Property.aggregate([
+        { $match: { ...activeFilter, "location.city": { $regex: regex } } },
+        { $group: { _id: "$location.city" } },
+        { $limit: 5 },
+        { $project: { _id: 0, city: "$_id" } },
+      ]),
+    ]);
+
+    res.status(200).json({ success: true, data: { projects, localities, cities } });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Failed to fetch search suggestions" });
+  }
+};
+
 module.exports = {
   getProperties,
   getPropertyById,
@@ -386,4 +426,5 @@ module.exports = {
   updateProperty,
   deleteProperty,
   togglePropertyStatus,
+  getSearchSuggestions,
 };

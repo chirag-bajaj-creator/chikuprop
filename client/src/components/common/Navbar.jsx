@@ -113,7 +113,7 @@ function Navbar() {
             </li>
             <li className="navbar-more" ref={moreRef}>
               <button
-                className={`navbar-more-btn${isActive("/services") || isActive("/wanted") ? " active" : ""}`}
+                className={`navbar-more-btn${isActive("/services") ? " active" : ""}`}
                 onClick={() => setMoreOpen(!moreOpen)}
                 aria-label="More menu"
               >
@@ -123,9 +123,6 @@ function Navbar() {
                 <div className="navbar-more-dropdown">
                   <Link to="/services" className={`navbar-more-item${isActive("/services") ? " active" : ""}`}>
                     Services
-                  </Link>
-                  <Link to="/wanted" className={`navbar-more-item${isActive("/wanted") ? " active" : ""}`}>
-                    Wanted Properties
                   </Link>
                 </div>
               )}
@@ -156,7 +153,6 @@ function Navbar() {
             <Link to="/rent" className={isActive("/rent") ? "active" : ""}>Rent</Link>
             <Link to="/add-property" className={isActive("/add-property") ? "active" : ""}>List Property</Link>
             <Link to="/services" className={isActive("/services") ? "active" : ""}>Services</Link>
-            <Link to="/wanted" className={isActive("/wanted") ? "active" : ""}>Wanted Properties</Link>
           </div>
         )}
 
