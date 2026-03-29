@@ -54,7 +54,7 @@ const updateProfile = async (req, res) => {
           return res.status(400).json({ success: false, error: "Invalid input" });
         }
         const trimmedPhone = phone.trim();
-        if (!/^[6-9]\d{9}$/.test(trimmedPhone)) {
+        if (!/^[6-9]\d{8}$/.test(trimmedPhone)) {
           return res.status(400).json({ success: false, error: "Enter a valid 10-digit Indian phone number" });
         }
         updates.phone = trimmedPhone;
