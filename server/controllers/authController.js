@@ -3,6 +3,15 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../models/User");
 
+// Create reusable transporter once (not on every request)
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
@@ -219,14 +228,6 @@ const forgotPassword = async (req, res) => {
     // Send email with reset link
     const resetLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
@@ -241,8 +242,12 @@ const forgotPassword = async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    // Send email asynchronously (don't wait for it)
+    transporter.sendMail(mailOptions).catch((err) => {
+      console.error("Email send error:", err);
+    });
 
+    // Respond immediately to user
     res.status(200).json({
       success: true,
       data: { message: "Reset link sent to your email. Check your inbox." },
