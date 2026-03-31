@@ -33,11 +33,11 @@ function AdminLayout() {
   };
 
   const navItems = [
-    { to: "/admin/dashboard", icon: <FiGrid size={20} />, label: "Dashboard" },
-    { to: "/admin/users", icon: <FiUsers size={20} />, label: "Users" },
-    { to: "/admin/properties", icon: <FiHome size={20} />, label: "Properties" },
-    { to: "/admin/grievances", icon: <FiMessageCircle size={20} />, label: "Grievances" },
-    { to: "/admin/appointments", icon: <FiCalendar size={20} />, label: "Appointments" },
+    { to: "/", icon: <FiGrid size={20} />, label: "Dashboard" },
+    { to: "/users", icon: <FiUsers size={20} />, label: "Users" },
+    { to: "/properties", icon: <FiHome size={20} />, label: "Properties" },
+    { to: "/grievances", icon: <FiMessageCircle size={20} />, label: "Grievances" },
+    { to: "/appointments", icon: <FiCalendar size={20} />, label: "Appointments" },
   ];
 
   return (
@@ -60,7 +60,6 @@ function AdminLayout() {
             <NavLink
               key={item.to}
               to={item.to}
-              state={{ accessGranted: true }}
               className={({ isActive }) =>
                 `admin-sidebar__item ${isActive ? "admin-sidebar__item--active" : ""}`
               }

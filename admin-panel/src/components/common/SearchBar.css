@@ -1,0 +1,160 @@
+/* Soft card wrapper */
+.search-bar {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card-hover);
+  padding: 10px;
+  max-width: 620px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 500;
+}
+
+/* Hard toggle buttons — sharp, uppercase */
+.search-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.search-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: var(--neutral-light);
+  border-radius: var(--radius-hard);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  color: var(--neutral-medium);
+  transition: all 0.2s;
+}
+
+.search-toggle button.active {
+  background: var(--gradient-button);
+  color: var(--white);
+}
+
+.search-input-group {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.search-input-group input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-input);
+  font-family: var(--font-family);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input-group input:focus {
+  border-color: var(--accent);
+}
+
+.search-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gradient-button);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-button);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+/* City suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-input);
+  box-shadow: var(--shadow-card-hover);
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 600;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.search-suggestion-item {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-dark);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.search-suggestion-item:hover {
+  background: var(--secondary);
+  color: var(--primary);
+}
+
+.suggestion-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align:left;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-input-group {
+    flex-direction: column;
+  }
+
+  .search-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .suggestion-state {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .search-bar {
+    padding: 8px;
+  }
+
+  .search-toggle button {
+    padding: 8px;
+    font-size: 12px;
+  }
+}

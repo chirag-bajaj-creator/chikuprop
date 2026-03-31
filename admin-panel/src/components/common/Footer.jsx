@@ -1,12 +1,36 @@
-import { Link } from "react-router-dom";
+import { useRef, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Footer.css";
 
 function Footer() {
+  const navigate = useNavigate();
+  const { setIsAdminMode, openAuthModal } = useAuth();
+  const clickTimestamps = useRef([]);
+
+  // Secret knock: click the footer brand logo 5 times within 3 seconds
+  const handleBrandClick = useCallback(() => {
+    const now = Date.now();
+    clickTimestamps.current.push(now);
+
+    // Keep only clicks from the last 3 seconds
+    clickTimestamps.current = clickTimestamps.current.filter(
+      (t) => now - t < 3000
+    );
+
+    if (clickTimestamps.current.length >= 5) {
+      clickTimestamps.current = [];
+      localStorage.setItem("admin_mode", "true");
+      setIsAdminMode(true);
+      openAuthModal("admin-login");
+    }
+  }, [navigate, setIsAdminMode, openAuthModal]);
+
   return (
     <footer className="footer">
       <div className="container footer-content">
         <div className="footer-brand">
-          <h3>
+          <h3 onClick={handleBrandClick} style={{ cursor: "default" }}>
             Chiku<span>Prop</span>
           </h3>
           <p>Find Your Vibe - discover properties in India</p>

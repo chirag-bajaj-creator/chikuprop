@@ -1,0 +1,141 @@
+.grievance-widget {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.grievance-widget__button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card-hover);
+  animation: grievanceBounce 2.5s ease-in-out infinite;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.grievance-widget__button:hover {
+  transform: scale(1.1);
+  animation: none;
+}
+
+.grievance-widget__button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  z-index: -1;
+  animation: grievancePulse 2s ease-out infinite;
+}
+
+.grievance-widget__emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* Bubble */
+.grievance-widget__bubble {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  max-width: 180px;
+  padding: 10px 14px;
+  animation: bubbleSlideUp 0.5s ease-out;
+  border: 1px solid var(--neutral-light);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.grievance-widget__bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.grievance-widget__text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-dark);
+  line-height: 1.4;
+  font-style: italic;
+  margin: 0;
+}
+
+.grievance-widget__cta {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+@keyframes grievanceBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes grievancePulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes bubbleSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .grievance-widget {
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .grievance-widget__button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .grievance-widget__emoji {
+    font-size: 24px;
+  }
+
+  .grievance-widget__bubble {
+    max-width: 160px;
+    padding: 8px 10px;
+  }
+
+  .grievance-widget__text {
+    font-size: 11px;
+  }
+
+  .grievance-widget__cta {
+    font-size: 10px;
+  }
+}

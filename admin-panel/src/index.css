@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Pink-Purple Palette */
+  --primary: #9333EA;
+  --primary-dark: #6B21A8;
+  --primary-light: #A855F7;
+  --accent: #EC4899;
+  --accent-light: #F472B6;
+  --accent-dark: #DB2777;
+
+  /* Neutral & White Minimalist */
+  --secondary: #FBF7FF;
+  --neutral-dark: #1E1B2E;
+  --neutral-medium: #64617B;
+  --neutral-light: #F0EDF5;
+  --white: #FFFFFF;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #6B21A8 0%, #9333EA 40%, #EC4899 100%);
+  --gradient-button: linear-gradient(135deg, #9333EA 0%, #EC4899 100%);
+  --gradient-subtle: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 100%);
+  --gradient-card-accent: linear-gradient(135deg, #9333EA 0%, #DB2777 100%);
+  --gradient-vendor-cta: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+
+  /* Shadows */
+  --shadow-card: 0 1px 4px rgba(107, 33, 168, 0.06), 0 2px 12px rgba(107, 33, 168, 0.04);
+  --shadow-card-hover: 0 4px 20px rgba(147, 51, 234, 0.12), 0 2px 8px rgba(236, 72, 153, 0.06);
+  --shadow-hard: 4px 4px 0px var(--neutral-dark);
+
+  /* Radius — soft + hard mix */
+  --radius-card: 14px;
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-modal: 16px;
+  --radius-hard: 2px;
+
+  --font-family: 'Inter', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  zoom: 0.90;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--white);
+  color: var(--neutral-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1 { font-size: clamp(22px, 2vw + 12px, 32px); font-weight: 800; letter-spacing: -0.5px; }
+h2 { font-size: clamp(18px, 1.5vw + 10px, 24px); font-weight: 700; letter-spacing: -0.3px; }
+h3 { font-size: clamp(16px, 1.2vw + 8px, 20px); font-weight: 700; }
+p { font-size: clamp(13px, 0.8vw + 6px, 15px); }
+small { font-size: 13px; color: var(--neutral-medium); }
+
+.container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 2vw, 24px);
+}
+
+/* Hard button — sharp, bold */
+.btn-primary {
+  background: var(--gradient-button);
+  color: var(--white);
+  border: none;
+  padding: 10px 24px;
+  border-radius: var(--radius-button);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(147, 51, 234, 0.3);
+}
+
+/* Soft button — rounded, gentle */
+.btn-secondary {
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary-light);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary);
+  color: var(--primary-dark);
+}
+
+.section {
+  padding: 60px 0;
+}
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Responsive typography & container */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 28px; }
+  h2 { font-size: 22px; }
+  h3 { font-size: 18px; }
+
+  .section {
+    padding: 40px 0;
+  }
+
+  .section-title {
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  h3 { font-size: 17px; }
+  p { font-size: 15px; }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .btn-primary {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .btn-secondary {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
+}

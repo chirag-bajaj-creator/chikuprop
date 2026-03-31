@@ -1,0 +1,131 @@
+.services-page {
+  min-height: calc(100vh - 140px);
+}
+
+.services-hero {
+  background: var(--gradient-subtle);
+  padding: 48px 0;
+  border-bottom: 2px solid var(--neutral-light);
+  text-align: center;
+}
+
+.services-hero-content h1 {
+  margin-bottom: 8px;
+}
+
+.services-hero-subtitle {
+  color: var(--neutral-medium);
+  font-size: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.services-content {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.service-card {
+  background: var(--white);
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-card);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.service-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--primary-light);
+}
+
+.service-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--gradient-subtle);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-card__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--neutral-dark);
+}
+
+.service-card__desc {
+  font-size: 14px;
+  color: var(--neutral-medium);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.service-card__cta {
+  font-size: 13px;
+  padding: 8px 20px;
+}
+
+.service-card__coming-soon {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--neutral-medium);
+  font-style: italic;
+}
+
+/* Bottom CTA */
+.services-bottom-cta {
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--gradient-subtle);
+  border-radius: var(--radius-card);
+}
+
+.services-bottom-cta h2 {
+  margin-bottom: 8px;
+}
+
+.services-bottom-cta p {
+  color: var(--neutral-medium);
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.services-bottom-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-hero {
+    padding: 32px 0;
+  }
+
+  .services-bottom-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}

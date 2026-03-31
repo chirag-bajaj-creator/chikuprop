@@ -211,15 +211,25 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     // Send email with reset link
-    const resetLink = `${process.env.CLIENT_URL || "http://localhost:5173"}/reset-password?token=${resetToken}`;
+    // If admin, send to admin app; if user, send to user app
+    let resetLink;
+    if (user.role === "admin") {
+      resetLink = `${process.env.ADMIN_URL || "http://localhost:3001"}/reset-password?token=${resetToken}`;
+    } else {
+      resetLink = `${process.env.CLIENT_URL || "http://localhost:5173"}/reset-password?token=${resetToken}`;
+    }
+
+    // Customize email subject and content based on role
+    const isAdmin = user.role === "admin";
+    const accountType = isAdmin ? "Admin" : "User";
 
     const mailOptions = {
       from: process.env.SENDGRID_FROM_EMAIL || "noreply@chikuprop.com",
       to: user.email,
-      subject: "Password Reset Link - ChikuProp",
+      subject: `${accountType} Password Reset Link - ChikuProp`,
       html: `
         <p>Hi ${user.name},</p>
-        <p>You requested a password reset for your ChikuProp account.</p>
+        <p>You requested a password reset for your ChikuProp ${accountType} account.</p>
         <p><a href="${resetLink}" style="color: #9333EA; font-weight: bold;">Click here to reset your password</a></p>
         <p>This link expires in 15 minutes.</p>
         <p>If you didn't request this, please ignore this email.</p>

@@ -30,6 +30,7 @@ const allowedOrigins = [
   "https://chikuprop.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000",
+  "http://localhost:3001",
 ].filter(Boolean);
 
 app.use(cors({

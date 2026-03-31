@@ -99,6 +99,16 @@ function PropertyForm({ mode = "add", initialData, onSubmitSuccess }) {
     }
   }, [user, mode]);
 
+  // After login, auto-dismiss prompt and jump to media upload step
+  useEffect(() => {
+    if (user && showLoginPrompt && mode === "add") {
+      setShowLoginPrompt(false);
+      setCurrentStep(3);
+      setCompletedSteps([0, 1, 2]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [user, showLoginPrompt, mode]);
+
   const updateField = useCallback((field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: "" }));
@@ -160,8 +170,8 @@ function PropertyForm({ mode = "add", initialData, onSubmitSuccess }) {
 
     if (step === 4) {
       if (!formData.contactPhone.trim()) newErrors.contactPhone = "Phone number is required";
-      else if (!/^[6-9]\d{9}$/.test(formData.contactPhone.trim())) {
-        newErrors.contactPhone = "Enter a valid 10-digit Indian phone number";
+      else if (!/^[6-9]\d{8}$/.test(formData.contactPhone.trim())) {
+        newErrors.contactPhone = "Enter a valid 9-digit Indian phone number";
       }
       if (!formData.contactEmail.trim()) newErrors.contactEmail = "Email is required";
       else if (!/^\S+@\S+\.\S+/.test(formData.contactEmail.trim())) {

@@ -1,0 +1,212 @@
+.admin-welcome {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Background blur effects */
+.admin-welcome__bg-blur {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+}
+
+.admin-welcome__bg-blur--1 {
+  width: 500px;
+  height: 500px;
+  background: #3B82F6;
+  top: -100px;
+  right: -100px;
+}
+
+.admin-welcome__bg-blur--2 {
+  width: 400px;
+  height: 400px;
+  background: #8B5CF6;
+  bottom: -50px;
+  left: -50px;
+}
+
+/* Container */
+.admin-welcome__container {
+  position: relative;
+  z-index: 10;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.admin-welcome__content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Icon */
+.admin-welcome__icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Title */
+.admin-welcome__title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.admin-welcome__highlight {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtitle */
+.admin-welcome__subtitle {
+  font-size: 16px;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Features grid */
+.admin-welcome__features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-welcome__feature {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.admin-welcome__feature:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-4px);
+}
+
+.admin-welcome__feature-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.admin-welcome__feature h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.admin-welcome__feature p {
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+/* Login Button */
+.admin-welcome__login-btn {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 14px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  margin-top: 12px;
+}
+
+.admin-welcome__login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
+}
+
+.admin-welcome__login-btn:active {
+  transform: translateY(0);
+}
+
+/* Footer text */
+.admin-welcome__footer {
+  font-size: 13px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .admin-welcome {
+    padding: 20px;
+  }
+
+  .admin-welcome__title {
+    font-size: 32px;
+  }
+
+  .admin-welcome__subtitle {
+    font-size: 14px;
+  }
+
+  .admin-welcome__features {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-welcome__login-btn {
+    padding: 12px 32px;
+    font-size: 14px;
+  }
+
+  .admin-welcome__bg-blur--1 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .admin-welcome__bg-blur--2 {
+    width: 250px;
+    height: 250px;
+  }
+}

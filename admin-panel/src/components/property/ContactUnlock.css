@@ -1,0 +1,264 @@
+/* ===========================
+   CONTACT UNLOCK — 3 States
+   Locked → Unlock → Revealed
+   Beautiful gradient design with appointment booking
+   =========================== */
+
+.mag-contact {
+  background: var(--white);
+  border: 2px solid var(--neutral-light);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* --- LOCKED STATE --- */
+.mag-contact--locked {
+  background: linear-gradient(135deg, #F5F3FF 0%, #FBF7FF 100%);
+  border: 2px solid var(--neutral-light);
+}
+
+.mag-contact__icon--lock {
+  color: var(--accent);
+}
+
+/* --- UNLOCKED STATE (vibrant gradient) --- */
+.mag-contact--unlocked {
+  background: linear-gradient(135deg, #F5F0FF 0%, #FDF2F8 50%, #FFF0F6 100%);
+  border: 2px solid var(--primary-light);
+  box-shadow: 0 4px 20px rgba(147, 51, 234, 0.12);
+}
+
+.mag-contact__icon--success {
+  color: var(--success, #22c55e);
+}
+
+/* --- HEADER --- */
+.mag-contact__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+}
+
+.mag-contact__header-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mag-contact__header span {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+}
+
+.mag-contact__header h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--neutral-dark);
+  margin-top: 2px;
+}
+
+/* --- CONTACT BLOCK --- */
+.mag-contact__contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mag-contact__field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid var(--primary-light);
+  border-radius: var(--radius-input);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-dark);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* --- Clickable contact fields (unlocked) --- */
+.mag-contact__field--active {
+  cursor: pointer;
+}
+
+.mag-contact__field--active:hover {
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.05), rgba(236, 72, 153, 0.05));
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.mag-contact__field--active span {
+  color: var(--neutral-dark);
+}
+
+.mag-contact__field svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* --- ACTION BUTTONS ROW --- */
+.mag-contact__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.mag-contact__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-button);
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mag-contact__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(147, 51, 234, 0.3);
+}
+
+.mag-contact__btn--call {
+  background: var(--gradient-button);
+  color: var(--white);
+}
+
+.mag-contact__btn--whatsapp {
+  background: #25d366;
+  color: var(--white);
+}
+
+.mag-contact__btn--appointment {
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  color: var(--white);
+  margin-top: 6px;
+  width: 100%;
+}
+
+.mag-contact__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- DIVIDER --- */
+.mag-contact__divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  margin: 4px 0 8px;
+}
+
+/* --- APPOINTMENT SECTION --- */
+.mag-contact__appointment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.mag-contact__appointment-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.mag-contact__appointment-title svg {
+  color: var(--primary);
+}
+
+.mag-contact__appointment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mag-contact__input {
+  padding: 10px 12px;
+  border: 1.5px solid var(--primary-light);
+  border-radius: var(--radius-input);
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--neutral-dark);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+}
+
+.mag-contact__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+/* --- LOGIN / UNLOCK BUTTON --- */
+.mag-contact__login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 13px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-button);
+}
+
+.mag-contact__login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- ERROR MESSAGE --- */
+.mag-contact__error {
+  font-size: 12px;
+  color: var(--error, #ef4444);
+  text-align: center;
+  margin: 0;
+  padding: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-input);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 640px) {
+  .mag-contact {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .mag-contact__appointment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mag-contact__actions {
+    flex-direction: column;
+  }
+
+  .mag-contact__btn {
+    padding: 11px 12px;
+  }
+}

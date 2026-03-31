@@ -8,8 +8,6 @@ import Landing from "./pages/Landing";
 import BuyPage from "./pages/BuyPage";
 import RentPage from "./pages/RentPage";
 import PropertyDetail from "./pages/PropertyDetail";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AddPropertyPage from "./pages/AddPropertyPage";
 import MyListingsPage from "./pages/MyListingsPage";
@@ -20,35 +18,23 @@ import WantedPage from "./pages/WantedPage";
 import PostWantedPage from "./pages/PostWantedPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import ServicesPage from "./pages/ServicesPage";
-import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
-import AdminUsersPage from "./pages/AdminUsersPage";
-import AdminPropertiesPage from "./pages/AdminPropertiesPage";
-import AdminGrievancesPage from "./pages/AdminGrievancesPage";
-import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
-import AdminLayout from "./components/admin/AdminLayout";
 import AdvertisePage from "./pages/AdvertisePage";
 import GrievancesPage from "./pages/GrievancesPage";
 import GrievanceWidget from "./components/common/GrievanceWidget";
 import NotFoundPage from "./pages/NotFoundPage";
-import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
-import HiddenRoute from "./components/auth/HiddenRoute";
 import AuthModal from "./components/auth/AuthModal";
 import "./App.css";
 
 function AppRoutes() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin/") && location.pathname !== "/admin/login";
 
   return (
     <>
-      {!isAdminRoute && <Navbar />}
-      <main className={isAdminRoute ? "" : "main-content"}>
+      <Navbar />
+      <main className="main-content">
         <Routes>
           {/* Public routes — directly accessible */}
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/buy" element={<BuyPage />} />
           <Route path="/rent" element={<RentPage />} />
@@ -57,6 +43,7 @@ function AppRoutes() {
           <Route path="/grievances" element={<GrievancesPage />} />
           <Route path="/wanted" element={<WantedPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/add-property" element={<AddPropertyPage />} />
 
           {/* User-protected routes */}
           <Route element={<ProtectedRoute roles={["user"]} />}>
@@ -64,21 +51,8 @@ function AppRoutes() {
             <Route path="/edit-property/:id" element={<EditPropertyPage />} />
             <Route path="/dashboard" element={<BuyerDashboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/add-property" element={<AddPropertyPage />} />
             <Route path="/wanted/post" element={<PostWantedPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
-          </Route>
-
-          {/* Admin — hidden behind secret knock, typing URL directly shows 404 */}
-          <Route path="/admin/login" element={<HiddenRoute><AdminLoginPage /></HiddenRoute>} />
-          <Route element={<AdminProtectedRoute />}>
-            <Route element={<HiddenRoute><AdminLayout /></HiddenRoute>}>
-              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-              <Route path="/admin/users" element={<AdminUsersPage />} />
-              <Route path="/admin/properties" element={<AdminPropertiesPage />} />
-              <Route path="/admin/grievances" element={<AdminGrievancesPage />} />
-              <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
-            </Route>
           </Route>
 
           {/* 404 catch-all — must be last */}
@@ -86,7 +60,7 @@ function AppRoutes() {
         </Routes>
       </main>
       {location.pathname === "/" && <GrievanceWidget />}
-      {!isAdminRoute && <Footer />}
+      <Footer />
       <AuthModal />
     </>
   );
