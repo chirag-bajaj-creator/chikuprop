@@ -28,6 +28,7 @@ connectDB();
 const allowedOrigins = [
   process.env.CLIENT_URL,
   "https://chikuprop.vercel.app",
+  "https://chikuprop-fust.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000",
   "http://localhost:3001",
