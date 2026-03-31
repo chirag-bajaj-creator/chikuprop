@@ -97,7 +97,7 @@ function AdminLoginPage() {
     setError("");
 
     try {
-      const data = await adminSignup({
+      await adminSignup({
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -105,11 +105,9 @@ function AdminLoginPage() {
         secretKey: formData.secretKey,
       });
 
-      // Store token and user so AuthContext picks it up
-      localStorage.setItem("chikuprop_token", data.token);
-      showToast("Admin account created! Logging you in...", "success");
-      // Reload to let AuthContext pick up the new token
-      window.location.href = "/admin/dashboard";
+      showToast("Admin account created successfully! Please log in.", "success");
+      setTab("login");
+      setFormData({ name: "", email: "", password: "", phone: "", secretKey: "" });
     } catch (err) {
       const message = err.response?.data?.error || "Signup failed. Please try again.";
       setError(message);

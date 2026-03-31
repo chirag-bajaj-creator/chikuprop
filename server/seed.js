@@ -7,35 +7,52 @@ const User = require("./models/User");
 const LOCATIONS = [
   // Maharashtra
   { city: "Mumbai", state: "Maharashtra", areas: [
-    { area: "Andheri West", pincode: "400053" }, { area: "Bandra East", pincode: "400051" },
-    { area: "Powai", pincode: "400076" }, { area: "Worli", pincode: "400018" },
-    { area: "Malad West", pincode: "400064" }, { area: "Goregaon East", pincode: "400063" },
-    { area: "Juhu", pincode: "400049" }, { area: "Borivali West", pincode: "400092" },
+    { area: "Andheri West", pincode: "400053" }, // Mumbai
+    { area: "Bandra East", pincode: "400051" }, // Mumbai
+    { area: "Powai", pincode: "400076" }, // Mumbai
+    { area: "Worli", pincode: "400018" }, // Mumbai
+    { area: "Malad West", pincode: "400064" }, // Mumbai
+    { area: "Goregaon East", pincode: "400063" }, // Mumbai
+    { area: "Juhu", pincode: "400049" }, // Mumbai
+    { area: "Borivali West", pincode: "400092" }, // Mumbai
   ]},
   { city: "Pune", state: "Maharashtra", areas: [
-    { area: "Hinjewadi", pincode: "411057" }, { area: "Kharadi", pincode: "411014" },
-    { area: "Baner", pincode: "411045" }, { area: "Wakad", pincode: "411057" },
-    { area: "Viman Nagar", pincode: "411014" }, { area: "Koregaon Park", pincode: "411001" },
+    { area: "Hinjewadi", pincode: "411057" }, // Pune
+    { area: "Kharadi", pincode: "411014" }, // Pune
+    { area: "Baner", pincode: "411045" }, // Pune
+    { area: "Wakad", pincode: "411057" }, // Pune
+    { area: "Viman Nagar", pincode: "411014" }, // Pune
+    { area: "Koregaon Park", pincode: "411001" }, // Pune
   ]},
   { city: "Nagpur", state: "Maharashtra", areas: [
-    { area: "Dharampeth", pincode: "440008" }, { area: "Sitabuldi", pincode: "440012" },
-    { area: "Civil Lines", pincode: "440001" }, { area: "Dakshin Gaon", pincode: "440009" },
+    { area: "Dharampeth", pincode: "440008" }, // Nagpur
+    { area: "Sitabuldi", pincode: "440012" }, // Nagpur
+    { area: "Civil Lines", pincode: "440001" }, // Nagpur
+    { area: "Dakshin Gaon", pincode: "440009" }, // Nagpur
   ]},
   // Delhi
   { city: "Delhi", state: "Delhi", areas: [
-    { area: "Connaught Place", pincode: "110001" }, { area: "Dwarka", pincode: "110075" },
-    { area: "Rohini", pincode: "110085" }, { area: "Saket", pincode: "110017" },
-    { area: "Vasant Kunj", pincode: "110070" }, { area: "Lajpat Nagar", pincode: "110024" },
+    { area: "Connaught Place", pincode: "110001" }, // Delhi
+    { area: "Dwarka", pincode: "110075" }, // Delhi
+    { area: "Rohini", pincode: "110085" }, // Delhi
+    { area: "Saket", pincode: "110017" }, // Delhi
+    { area: "Vasant Kunj", pincode: "110070" }, // Delhi
+    { area: "Lajpat Nagar", pincode: "110024" }, // Delhi
   ]},
   // Karnataka
   { city: "Bangalore", state: "Karnataka", areas: [
-    { area: "Koramangala", pincode: "560034" }, { area: "Whitefield", pincode: "560066" },
-    { area: "Indiranagar", pincode: "560038" }, { area: "HSR Layout", pincode: "560102" },
-    { area: "Electronic City", pincode: "560100" }, { area: "Jayanagar", pincode: "560011" },
+    { area: "Koramangala", pincode: "560034" }, // Bangalore
+    { area: "Whitefield", pincode: "560066" }, // Bangalore
+    { area: "Indiranagar", pincode: "560038" }, // Bangalore
+    { area: "HSR Layout", pincode: "560102" }, // Bangalore
+    { area: "Electronic City", pincode: "560100" }, // Bangalore
+    { area: "Jayanagar", pincode: "560011" }, // Bangalore
   ]},
   { city: "Mysore", state: "Karnataka", areas: [
-    { area: "Sayyaji Rao Road", pincode: "570001" }, { area: "Vijayanagar", pincode: "570009" },
-    { area: "Kuvempu Road", pincode: "570001" }, { area: "Nazarbad", pincode: "570004" },
+    { area: "Sayyaji Rao Road", pincode: "570001" }, // Mysore
+    { area: "Vijayanagar", pincode: "570009" }, // Mysore
+    { area: "Kuvempu Road", pincode: "570001" }, // Mysore
+    { area: "Nazarbad", pincode: "570004" }, // Mysore
   ]},
   // Telangana
   { city: "Hyderabad", state: "Telangana", areas: [
@@ -62,6 +79,7 @@ const LOCATIONS = [
   // Haryana
   { city: "Gurgaon", state: "Haryana", areas: [
     { area: "DLF Phase 3", pincode: "122002" }, { area: "Sector 56", pincode: "122011" },
+    { area: "Sector 17", pincode: "122001" }, { area: "Sector 22", pincode: "122015" },
     { area: "Sohna Road", pincode: "122018" }, { area: "Golf Course Road", pincode: "122002" },
   ]},
   { city: "Faridabad", state: "Haryana", areas: [
@@ -219,25 +237,59 @@ const LISTING_TYPES = ["sale", "rent"];
 const FURNISHING = ["furnished", "semi-furnished", "unfurnished"];
 const AMENITIES = ["Parking", "Gym", "Swimming Pool", "Garden", "Security", "Elevator", "Power Backup", "Water Supply", "Club House", "Playground"];
 
-// Unsplash images for properties
-const IMAGES = [
-  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
-  "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800",
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
-  "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=800",
-  "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
-  "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800",
-  "https://images.unsplash.com/photo-1600573472591-ee6981cf81d6?w=800",
-  "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800",
-];
+// Categorized images by property type and bedrooms
+const IMAGE_CATEGORIES = {
+  "1-BHK-flat": [
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+    "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800",
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+  ],
+  "2-BHK-flat": [
+    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+    "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
+    "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=800",
+  ],
+  "3-BHK-flat": [
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
+    "https://images.unsplash.com/photo-1600573472591-ee6981cf81d6?w=800",
+  ],
+  "4-BHK-flat": [
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800",
+    "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800",
+  ],
+  "1-BHK-house": [
+    "https://images.unsplash.com/photo-1570129477492-45a003537e1f?w=800",
+    "https://images.unsplash.com/photo-1540932239986-310128078ceb?w=800",
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+  ],
+  "2-BHK-house": [
+    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+  ],
+  "3-BHK-house": [
+    "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800",
+    "https://images.unsplash.com/photo-1600573472591-ee6981cf81d6?w=800",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
+  ],
+  "4-BHK-house": [
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+  ],
+  "plot": [
+    "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
+    "https://images.unsplash.com/photo-1505228395891-9a51e7e86e81?w=800",
+    "https://images.unsplash.com/photo-1486182143442-1ff80fc737a2?w=800",
+  ],
+  "commercial": [
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800",
+  ],
+};
 
 // ── Title templates by type ──
 const TITLES = {
@@ -311,6 +363,12 @@ const TITLES = {
   },
 };
 
+const PROJECT_NAMES = [
+  "Maya Garden", "Sona Road", "DLF Privé", "Lodha Meridian", "Prestige Towers", "Godrej Platinum", "Oberoi Realty", "Hiranandani",
+  "ATS One", "Emaar MGF", "Shriram Properties", "Mahindra Lifespace", "Brigade Group", "Puravankara", "Salarpuria Sattva",
+  "Provident Housing", "Kolte-Patil", "Rohan Lifescapes", "Gini & Jony", "L&T Realty",
+];
+
 const DESCRIPTIONS = {
   flat: [
     "Well-maintained apartment with modern interiors, modular kitchen, and ample natural light. Located in a prime residential area with excellent connectivity to public transport, schools, and hospitals. Society has 24/7 security and power backup.",
@@ -352,15 +410,13 @@ const generatePhone = () => {
   return num;
 };
 
-const generateEmail = (index) => {
+const generateEmail = () => {
   const names = ["rahul", "priya", "amit", "sneha", "vikram", "neha", "arjun", "kavya", "rohan", "anita", "suresh", "pooja", "deepak", "meera", "rajesh", "sonia"];
   const domains = ["gmail.com", "yahoo.com", "outlook.com", "rediffmail.com"];
   return `${pick(names)}${rand(10, 999)}@${pick(domains)}`;
 };
 
-function generateProperty(index, vendorId) {
-  const loc = pick(LOCATIONS);
-  const areaObj = pick(loc.areas);
+function generateProperty(loc, areaObj, vendorId) {
   const propertyType = pick(PROPERTY_TYPES);
   const listingType = pick(LISTING_TYPES);
 
@@ -401,9 +457,38 @@ function generateProperty(index, vendorId) {
   const numAmenities = rand(2, 6);
   const amenities = pickN(AMENITIES, numAmenities);
 
-  // Images
-  const numImages = rand(1, 4);
-  const images = pickN(IMAGES, numImages);
+  // Images — select from category based on property type and bedrooms
+  let imageCategory = "plot"; // Default fallback
+
+  if (propertyType === "flat" && bedrooms) {
+    const bhkCount = bedrooms > 4 ? 4 : bedrooms; // Cap at 4 BHK
+    imageCategory = `${bhkCount}-BHK-flat`;
+  } else if (propertyType === "house" && bedrooms) {
+    const bhkCount = bedrooms > 4 ? 4 : bedrooms; // Cap at 4 BHK
+    imageCategory = `${bhkCount}-BHK-house`;
+  } else if (propertyType === "plot") {
+    imageCategory = "plot";
+  } else if (propertyType === "commercial") {
+    imageCategory = "commercial";
+  } else {
+    // Fallback for any unexpected property type
+    imageCategory = "plot";
+  }
+
+  // Get category images or use plot as fallback
+  let categoryImages = IMAGE_CATEGORIES[imageCategory];
+  if (!categoryImages) {
+    categoryImages = IMAGE_CATEGORIES["plot"];
+  }
+
+  // Always ensure we have images array
+  const numImages = Math.max(1, rand(1, 4)); // Ensure at least 1 image
+  let images = pickN(categoryImages, Math.min(numImages, categoryImages.length));
+
+  // Triple safety: ensure images array is NEVER empty
+  if (!images || images.length === 0 || !Array.isArray(images)) {
+    images = [IMAGE_CATEGORIES["plot"][0]];
+  }
 
   // Title
   const templates = TITLES[propertyType][listingType];
@@ -422,6 +507,7 @@ function generateProperty(index, vendorId) {
     propertyType,
     title,
     description,
+    projectName: pick(PROJECT_NAMES),
     price,
     location: {
       city: loc.city,
@@ -436,7 +522,7 @@ function generateProperty(index, vendorId) {
     amenities,
     images,
     contactPhone: generatePhone(),
-    contactEmail: generateEmail(index),
+    contactEmail: generateEmail(),
     planType: Math.random() < 0.2 ? "paid" : "free",
     status: "active",
     viewCount: rand(0, 200),
@@ -459,11 +545,40 @@ const seedDB = async () => {
 
     console.log(`Using vendor: ${user.name} (${user.email})`);
 
-    // Generate 20000 properties
-    const TOTAL = 20000;
+    // Generate properties: 10 per city + 5 per area
     const properties = [];
-    for (let i = 0; i < TOTAL; i++) {
-      properties.push(generateProperty(i, user._id));
+
+    // Loop 1: 10 properties per city (area randomly chosen from that city's areas)
+    for (const loc of LOCATIONS) {
+      for (let i = 0; i < 10; i++) {
+        const areaObj = pick(loc.areas);
+        properties.push(generateProperty(loc, areaObj, user._id));
+      }
+    }
+
+    // Loop 2: 5 properties per area (area fixed)
+    for (const loc of LOCATIONS) {
+      for (const areaObj of loc.areas) {
+        for (let i = 0; i < 5; i++) {
+          properties.push(generateProperty(loc, areaObj, user._id));
+        }
+      }
+    }
+
+    // Validation: Ensure all properties have at least 1 image
+    let emptyImageCount = 0;
+    properties.forEach((prop, idx) => {
+      if (!prop.images || prop.images.length === 0) {
+        console.warn(`Property ${idx} (${prop.title}) has NO images! Assigning fallback.`);
+        prop.images = [IMAGE_CATEGORIES["plot"][0]];
+        emptyImageCount++;
+      }
+    });
+
+    if (emptyImageCount > 0) {
+      console.log(`⚠️  Fixed ${emptyImageCount} properties with missing images`);
+    } else {
+      console.log(`✅ All ${properties.length} properties have images`);
     }
 
     // Clear old seeded data and insert new
@@ -475,10 +590,25 @@ const seedDB = async () => {
     for (let i = 0; i < properties.length; i += BATCH) {
       const batch = properties.slice(i, i + BATCH);
       await Property.insertMany(batch);
-      console.log(`Inserted ${Math.min(i + BATCH, TOTAL)} / ${TOTAL}`);
+      console.log(`Inserted ${Math.min(i + BATCH, properties.length)} / ${properties.length}`);
     }
 
-    console.log(`Done! Seeded ${TOTAL} properties across ${LOCATIONS.length} cities.`);
+    // Final verification: check all properties in DB have images
+    const allProps = await Property.find({});
+    let dbEmptyCount = 0;
+    allProps.forEach((prop) => {
+      if (!prop.images || prop.images.length === 0) {
+        dbEmptyCount++;
+      }
+    });
+
+    if (dbEmptyCount === 0) {
+      console.log(`✅ SUCCESS! All ${allProps.length} properties in database have images!`);
+    } else {
+      console.warn(`⚠️  ${dbEmptyCount} properties in database have NO images`);
+    }
+
+    console.log(`Done! Seeded ${properties.length} properties across ${LOCATIONS.length} cities.`);
     process.exit(0);
   } catch (error) {
     console.error("Seed error:", error.message);

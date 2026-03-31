@@ -45,25 +45,26 @@ function AppRoutes() {
       {!isAdminRoute && <Navbar />}
       <main className={isAdminRoute ? "" : "main-content"}>
         <Routes>
+          {/* Public routes — directly accessible */}
           <Route path="/" element={<Landing />} />
-          <Route path="/buy" element={<BuyPage />} />
-          <Route path="/rent" element={<RentPage />} />
-          <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/buy" element={<BuyPage />} />
+          <Route path="/rent" element={<RentPage />} />
+          <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/advertise" element={<AdvertisePage />} />
           <Route path="/grievances" element={<GrievancesPage />} />
-          <Route path="/add-property" element={<AddPropertyPage />} />
           <Route path="/wanted" element={<WantedPage />} />
           <Route path="/services" element={<ServicesPage />} />
 
-          {/* Protected routes — all logged-in users (not admin) */}
+          {/* User-protected routes */}
           <Route element={<ProtectedRoute roles={["user"]} />}>
             <Route path="/my-listings" element={<MyListingsPage />} />
             <Route path="/edit-property/:id" element={<EditPropertyPage />} />
             <Route path="/dashboard" element={<BuyerDashboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/add-property" element={<AddPropertyPage />} />
             <Route path="/wanted/post" element={<PostWantedPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
           </Route>

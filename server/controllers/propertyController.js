@@ -10,6 +10,7 @@ const getProperties = async (req, res) => {
       listingType,
       propertyType,
       city,
+      area,
       minPrice,
       maxPrice,
       bedrooms,
@@ -25,6 +26,7 @@ const getProperties = async (req, res) => {
     if (listingType) filter.listingType = listingType;
     if (propertyType) filter.propertyType = propertyType;
     if (city) filter["location.city"] = { $regex: escapeRegex(city), $options: "i" };
+    if (area) filter["location.area"] = { $regex: escapeRegex(area), $options: "i" };
     if (bedrooms) filter.bedrooms = Number(bedrooms);
     if (furnishing) filter.furnishing = furnishing;
 
@@ -379,10 +381,11 @@ const togglePropertyStatus = async (req, res) => {
   }
 };
 
-// GET /api/properties/search-suggestions — grouped search suggestions from DB
+// GET /api/properties/search-suggestions — return cities + their sub-areas matching query
 const getSearchSuggestions = async (req, res) => {
   try {
     const { q } = req.query;
+
     if (!q || q.trim().length < 2) {
       return res.status(200).json({ success: true, data: { projects: [], localities: [], cities: [] } });
     }
@@ -391,29 +394,29 @@ const getSearchSuggestions = async (req, res) => {
     const regex = new RegExp(safeQuery, "i");
     const activeFilter = { status: "active" };
 
-    const [projects, localities, cities] = await Promise.all([
-      Property.aggregate([
-        { $match: { ...activeFilter, projectName: { $regex: regex } } },
-        { $group: { _id: { name: "$projectName", city: "$location.city" } } },
-        { $limit: 5 },
-        { $project: { _id: 0, name: "$_id.name", city: "$_id.city" } },
-      ]),
-      Property.aggregate([
-        { $match: { ...activeFilter, "location.area": { $regex: regex } } },
-        { $group: { _id: { area: "$location.area", city: "$location.city" } } },
-        { $limit: 5 },
-        { $project: { _id: 0, area: "$_id.area", city: "$_id.city" } },
-      ]),
-      Property.aggregate([
-        { $match: { ...activeFilter, "location.city": { $regex: regex } } },
-        { $group: { _id: "$location.city" } },
-        { $limit: 5 },
-        { $project: { _id: 0, city: "$_id" } },
-      ]),
+    // Step 1: Find cities matching the query
+    const matchingCities = await Property.aggregate([
+      { $match: { ...activeFilter, "location.city": { $regex: regex } } },
+      { $group: { _id: "$location.city" } },
+      { $limit: 5 },
+      { $project: { _id: 0, city: "$_id" } },
     ]);
 
-    res.status(200).json({ success: true, data: { projects, localities, cities } });
+    // Step 2: For matched cities, get all their sub-areas
+    let localities = [];
+    if (matchingCities.length > 0) {
+      const cityNames = matchingCities.map(c => c.city);
+      localities = await Property.aggregate([
+        { $match: { ...activeFilter, "location.city": { $in: cityNames } } },
+        { $group: { _id: { area: "$location.area", city: "$location.city" } } },
+        { $limit: 20 },
+        { $project: { _id: 0, area: "$_id.area", city: "$_id.city" } },
+      ]);
+    }
+
+    res.status(200).json({ success: true, data: { projects: [], localities, cities: matchingCities } });
   } catch (error) {
+    console.error("Search error:", error);
     res.status(500).json({ success: false, error: "Failed to fetch search suggestions" });
   }
 };

@@ -109,7 +109,7 @@
   transition: background 0.15s;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
 }
 
@@ -125,26 +125,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align:left;
-}
-
-.search-suggestions__group-header {
-  padding: 6px 16px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--neutral-medium, #888);
-  background: var(--neutral-light, #f5f5f5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  list-style: none;
-  cursor: default;
-}
-
-.suggestion-subtext {
-  font-size: 11px;
-  color: var(--neutral-medium, #888);
-  margin-left: 6px;
-  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {

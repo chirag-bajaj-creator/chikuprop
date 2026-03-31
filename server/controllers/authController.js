@@ -1,28 +1,17 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
 const User = require("../models/User");
 
-// Create reusable transporter once (not on every request)
-// Using Brevo SMTP (works on Render, unlike Gmail)
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp-relay.brevo.com",
-  port: process.env.SMTP_PORT || 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Initialize SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Verify transporter connection on startup
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("Email transporter error:", error);
-  } else {
-    console.log("Email transporter ready:", success);
-  }
-});
+// Verify SendGrid on startup
+if (!process.env.SENDGRID_API_KEY) {
+  console.error("Email error: SENDGRID_API_KEY not configured");
+} else {
+  console.log("Email service ready: SendGrid");
+}
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -65,18 +54,10 @@ const signup = async (req, res) => {
       phone,
     });
 
-    const token = generateToken(user._id);
-
     res.status(201).json({
       success: true,
       data: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        avatar: user.avatar,
-        token,
+        message: "Account created successfully. Please log in with your credentials.",
       },
     });
   } catch (error) {
@@ -191,18 +172,10 @@ const adminSignup = async (req, res) => {
       role: "admin",
     });
 
-    const token = generateToken(user._id);
-
     res.status(201).json({
       success: true,
       data: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        avatar: user.avatar,
-        token,
+        message: "Admin account created successfully. Please log in with your credentials.",
       },
     });
   } catch (error) {
@@ -238,10 +211,10 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     // Send email with reset link
-    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.CLIENT_URL || "http://localhost:5173"}/reset-password?token=${resetToken}`;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.SENDGRID_FROM_EMAIL || "noreply@chikuprop.com",
       to: user.email,
       subject: "Password Reset Link - ChikuProp",
       html: `
@@ -255,12 +228,18 @@ const forgotPassword = async (req, res) => {
     };
 
     // Send email asynchronously (don't wait for it)
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.error("Email send error for", user.email, ":", err);
-      } else {
-        console.log("Email sent successfully to", user.email, ":", info.response);
-      }
+    console.log("📧 Attempting to send email with:", {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject,
+      apiKeySet: !!process.env.SENDGRID_API_KEY,
+    });
+
+    sgMail.send(mailOptions).then(() => {
+      console.log("✅ Email sent successfully to", user.email);
+    }).catch((err) => {
+      console.error("❌ Email send error for", user.email);
+      console.error("Error details:", err.response?.body || err.message);
     });
 
     // Respond immediately to user

@@ -113,7 +113,7 @@ function RegisterPage() {
       <div className="register-card">
         <div className="register-header">
           <h2>Create Account</h2>
-          <p>Join ChikuProp and find your dream property</p>
+          <p>Join ChikuProp and Find Your Vibe</p>
         </div>
 
         {serverError && <div className="register-error">{serverError}</div>}

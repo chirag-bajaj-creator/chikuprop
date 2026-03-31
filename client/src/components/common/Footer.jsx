@@ -1,9 +1,11 @@
 import { useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Footer.css";
 
 function Footer() {
   const navigate = useNavigate();
+  const { setIsAdminMode, openAuthModal } = useAuth();
   const clickTimestamps = useRef([]);
 
   // Secret knock: click the footer brand logo 5 times within 3 seconds
@@ -18,9 +20,11 @@ function Footer() {
 
     if (clickTimestamps.current.length >= 5) {
       clickTimestamps.current = [];
-      navigate("/admin/login", { state: { accessGranted: true } });
+      localStorage.setItem("admin_mode", "true");
+      setIsAdminMode(true);
+      openAuthModal("admin-login");
     }
-  }, [navigate]);
+  }, [navigate, setIsAdminMode, openAuthModal]);
 
   return (
     <footer className="footer">
@@ -29,7 +33,7 @@ function Footer() {
           <h3 onClick={handleBrandClick} style={{ cursor: "default" }}>
             Chiku<span>Prop</span>
           </h3>
-          <p>Find your dream property in India</p>
+          <p>Find Your Vibe - discover properties in India</p>
         </div>
 
         <div className="footer-links">

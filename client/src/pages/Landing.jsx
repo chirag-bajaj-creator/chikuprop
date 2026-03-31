@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import SearchBar from "../components/common/SearchBar";
 import PropertyCard from "../components/common/PropertyCard";
 import Loader from "../components/common/Loader";
@@ -18,9 +19,15 @@ const cities = [
 ];
 
 function Landing() {
+  const { user } = useAuth();
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Redirect admins to their dashboard
+  if (user?.role === "admin") {
+    return <Navigate to="/admin/dashboard" state={{ accessGranted: true }} replace />;
+  }
 
   const fetchFeatured = async () => {
     try {

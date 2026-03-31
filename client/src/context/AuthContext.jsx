@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, registerUser, getCurrentUser } from "../services/authService";
+import { loginUser, registerUser, getCurrentUser, adminSignup as adminSignupAPI } from "../services/authService";
 
 const TOKEN_KEY = "chikuprop_token";
 const AuthContext = createContext(null);
@@ -9,8 +9,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem(TOKEN_KEY));
   const [loading, setLoading] = useState(true);
-  const [authModalView, setAuthModalView] = useState(null); // null | "login" | "register" | "forgot"
+  const [authModalView, setAuthModalView] = useState(null); // null | "login" | "register" | "forgot" | "admin-login" | "admin-register"
   const [intendedPath, setIntendedPath] = useState(null);
+  const [isAdminMode, setIsAdminMode] = useState(localStorage.getItem("admin_mode") === "true");
   const navigate = useNavigate();
 
   const openAuthModal = useCallback((view = "login", path = null) => {
@@ -28,14 +29,15 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const handleUnauthorized = (event) => {
       const path = event.detail?.path;
-      openAuthModal("login", path);
+      const loginView = isAdminMode ? "admin-login" : "login";
+      openAuthModal(loginView, path);
     };
 
     window.addEventListener("auth:unauthorized", handleUnauthorized);
     return () => {
       window.removeEventListener("auth:unauthorized", handleUnauthorized);
     };
-  }, [openAuthModal]);
+  }, [openAuthModal, isAdminMode]);
 
   // On mount, verify token by fetching current user
   useEffect(() => {
@@ -87,6 +89,10 @@ export function AuthProvider({ children }) {
     await registerUser({ name, email, password, phone });
   }, []);
 
+  const adminSignup = useCallback(async ({ name, email, password, phone, secretKey }) => {
+    await adminSignupAPI({ name, email, password, phone, secretKey });
+  }, []);
+
   const refreshUser = useCallback(async () => {
     try {
       const userData = await getCurrentUser();
@@ -97,13 +103,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(() => {
+    const isAdmin = user?.role === "admin";
     localStorage.removeItem(TOKEN_KEY);
     setUser(null);
     setToken(null);
-    navigate("/");
-  }, [navigate]);
+    navigate(isAdmin ? "/admin/login" : "/");
+  }, [navigate, user]);
 
-  const value = { user, token, loading, login, register, logout, refreshUser, authModalView, openAuthModal, closeAuthModal, intendedPath, setIntendedPath };
+  const value = { user, token, loading, login, register, adminSignup, logout, refreshUser, authModalView, openAuthModal, closeAuthModal, intendedPath, setIntendedPath, isAdminMode, setIsAdminMode };
 
   return (
     <AuthContext.Provider value={value}>

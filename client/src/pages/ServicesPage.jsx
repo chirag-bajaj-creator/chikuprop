@@ -19,7 +19,7 @@ const services = [
   },
   {
     icon: <FiFileText size={28} />,
-    title: "Dream Home",
+    title: "Find Your Vibe",
     description: "Post your requirement and let sellers and landlords find you with the right property.",
     link: "/wanted",
     cta: "Post Requirement",

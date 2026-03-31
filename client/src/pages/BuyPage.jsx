@@ -25,6 +25,7 @@ function BuyPage() {
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [filters, setFilters] = useState({
     city: searchParams.get("city") || "",
+    area: searchParams.get("area") || "",
     propertyType: "",
     bedrooms: "",
     minPrice: "",
@@ -37,9 +38,10 @@ function BuyPage() {
   // Sync filters when URL query params change (e.g., city card click, search bar)
   useEffect(() => {
     const urlCity = searchParams.get("city") || "";
+    const urlArea = searchParams.get("area") || "";
     const urlSearch = searchParams.get("search") || "";
-    if (urlCity !== filters.city) {
-      setFilters((prev) => ({ ...prev, city: urlCity }));
+    if (urlCity !== filters.city || urlArea !== filters.area) {
+      setFilters((prev) => ({ ...prev, city: urlCity, area: urlArea }));
       setPage(1);
     }
     if (urlSearch !== search) {
@@ -56,6 +58,7 @@ function BuyPage() {
       const params = { listingType: "sale", page, sort };
       if (search) params.search = search;
       if (filters.city) params.city = filters.city;
+      if (filters.area) params.area = filters.area;
       if (filters.propertyType) params.propertyType = filters.propertyType;
       if (filters.bedrooms) params.bedrooms = filters.bedrooms;
       if (filters.minPrice) params.minPrice = filters.minPrice;

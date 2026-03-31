@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { useToast } from "../../context/ToastContext";
 import { getSearchSuggestions } from "../../services/searchService";
 import "./SearchBar.css";
 
 function SearchBar() {
   const [city, setCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedArea, setSelectedArea] = useState("");
   const [listingType, setListingType] = useState("sale");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState({ projects: [], localities: [], cities: [] });
@@ -13,6 +16,7 @@ function SearchBar() {
   const suggestionsRef = useRef(null);
   const debounceRef = useRef(null);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   // Debounced fetch suggestions from DB
   const fetchSuggestions = (query) => {
@@ -28,7 +32,7 @@ function SearchBar() {
         setLoading(true);
         const data = await getSearchSuggestions(query.trim());
         setSuggestions(data);
-      } catch {
+      } catch (error) {
         setSuggestions({ projects: [], localities: [], cities: [] });
       } finally {
         setLoading(false);
@@ -43,24 +47,44 @@ function SearchBar() {
     };
   }, []);
 
-  const hasSuggestions = suggestions.projects.length > 0 || suggestions.localities.length > 0 || suggestions.cities.length > 0;
+  const hasSuggestions = suggestions.cities.length > 0 || suggestions.localities.length > 0;
 
   const handleSearch = (e) => {
     e.preventDefault();
     setShowSuggestions(false);
+
+    if (!city.trim()) {
+      showToast("Please enter a city to search", "error");
+      return;
+    }
+
     const path = listingType === "sale" ? "/buy" : "/rent";
-    const params = city.trim() ? `?search=${encodeURIComponent(city.trim())}` : "";
+    let params = `?city=${encodeURIComponent(selectedCity || city.trim())}`;
+    if (selectedArea) {
+      params += `&area=${encodeURIComponent(selectedArea)}`;
+    }
     navigate(`${path}${params}`);
   };
 
   const handleInputChange = (e) => {
     setCity(e.target.value);
+    setSelectedCity("");
+    setSelectedArea("");
     setShowSuggestions(true);
     fetchSuggestions(e.target.value);
   };
 
-  const handleSelect = (name) => {
-    setCity(name);
+  const handleCitySelect = (cityName) => {
+    setCity(cityName);
+    setSelectedCity(cityName);
+    setSelectedArea("");
+    setShowSuggestions(false);
+  };
+
+  const handleAreaSelect = (areaName, cityName) => {
+    setCity(areaName);
+    setSelectedCity(cityName);
+    setSelectedArea(areaName);
     setShowSuggestions(false);
   };
 
@@ -99,10 +123,10 @@ function SearchBar() {
       <div className="search-input-group" ref={suggestionsRef}>
         <input
           type="text"
-          placeholder="Search by project, locality, or city..."
+          placeholder="Search by city..."
           value={city}
           onChange={handleInputChange}
-          onFocus={() => city.trim().length >= 2 && setShowSuggestions(true)}
+          onFocus={() => setShowSuggestions(city.trim().length >= 2)}
         />
         <button type="submit" className="search-btn">
           <FiSearch size={20} />
@@ -111,38 +135,16 @@ function SearchBar() {
 
         {showSuggestions && hasSuggestions && (
           <ul className="search-suggestions">
-            {suggestions.projects.length > 0 && (
-              <>
-                <li className="search-suggestions__group-header">Projects</li>
-                {suggestions.projects.map((p) => (
-                  <li key={`project-${p.name}`} className="search-suggestion-item" onClick={() => handleSelect(p.name)}>
-                    <span className="suggestion-name">{p.name}</span>
-                    <span className="suggestion-subtext">{p.city}</span>
-                  </li>
-                ))}
-              </>
-            )}
-            {suggestions.localities.length > 0 && (
-              <>
-                <li className="search-suggestions__group-header">Localities</li>
-                {suggestions.localities.map((l) => (
-                  <li key={`locality-${l.area}-${l.city}`} className="search-suggestion-item" onClick={() => handleSelect(l.area)}>
-                    <span className="suggestion-name">{l.area}</span>
-                    <span className="suggestion-subtext">{l.city}</span>
-                  </li>
-                ))}
-              </>
-            )}
-            {suggestions.cities.length > 0 && (
-              <>
-                <li className="search-suggestions__group-header">Cities</li>
-                {suggestions.cities.map((c) => (
-                  <li key={`city-${c.city}`} className="search-suggestion-item" onClick={() => handleSelect(c.city)}>
-                    <span className="suggestion-name">{c.city}</span>
-                  </li>
-                ))}
-              </>
-            )}
+            {suggestions.cities.map((c) => (
+              <li key={`city-${c.city}`} className="search-suggestion-item" onClick={() => handleCitySelect(c.city)}>
+                <span className="suggestion-name">{c.city}</span>
+              </li>
+            ))}
+            {suggestions.localities.map((l) => (
+              <li key={`area-${l.area}-${l.city}`} className="search-suggestion-item" onClick={() => handleAreaSelect(l.area, l.city)}>
+                <span className="suggestion-name">{l.area}</span>
+              </li>
+            ))}
           </ul>
         )}
       </div>

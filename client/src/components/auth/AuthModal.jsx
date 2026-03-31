@@ -62,10 +62,10 @@ function LoginForm({ onSwitchToRegister, onSwitchToForgot }) {
         showToast("Admin accounts must use the admin login panel.", "error");
         return;
       }
-      showToast("Login successful! Welcome back.", "success");
+      showToast("Hurray! You're logged in!", "success");
       closeAuthModal();
+      navigate("/");
       if (intendedPath) {
-        navigate(intendedPath);
         setIntendedPath(null);
       }
     } catch (err) {
@@ -436,6 +436,331 @@ function RegisterForm({ onSwitchToLogin }) {
   );
 }
 
+function AdminLoginForm({ onSwitchToRegister }) {
+  const { login, closeAuthModal, intendedPath, setIntendedPath } = useAuth();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
+  };
+
+  const validate = () => {
+    if (!formData.email.trim()) return "Email is required";
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return "Enter a valid email";
+    if (!formData.password) return "Password is required";
+    return null;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const data = await login(formData.email, formData.password);
+      if (data.role !== "admin") {
+        localStorage.removeItem("chikuprop_token");
+        setError("This account is not an admin account.");
+        showToast("Only admin accounts can log in here.", "error");
+        return;
+      }
+      showToast("Admin login successful!", "success");
+      closeAuthModal();
+      navigate("/admin/dashboard", { state: { accessGranted: true } });
+      if (intendedPath) {
+        setIntendedPath(null);
+      }
+    } catch (err) {
+      const message =
+        err.response?.data?.error || "Something went wrong. Please try again.";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form className="auth-modal-form" onSubmit={handleSubmit}>
+      {error && <div className="auth-modal-error">{error}</div>}
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-email">Email</label>
+        <input
+          type="email"
+          id="admin-email"
+          name="email"
+          placeholder="you@example.com"
+          value={formData.email}
+          onChange={handleChange}
+          autoComplete="email"
+        />
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-password">Password</label>
+        <div className="auth-modal-password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="admin-password"
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
+            autoComplete="current-password"
+          />
+          <button
+            type="button"
+            className="auth-modal-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        className="btn-primary auth-modal-submit"
+        disabled={loading}
+      >
+        {loading ? <span className="btn-spinner"></span> : "Admin Login"}
+      </button>
+
+      <p className="auth-modal-switch">
+        Don't have an admin account?{" "}
+        <button type="button" className="auth-modal-switch-btn" onClick={onSwitchToRegister}>
+          Create Admin Account
+        </button>
+      </p>
+    </form>
+  );
+}
+
+function AdminRegisterForm({ onSwitchToLogin }) {
+  const { showToast } = useToast();
+  const { adminSignup } = useAuth();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    secretKey: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setServerError("");
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Full name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Enter a valid email";
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    else if (!PHONE_REGEX.test(formData.phone))
+      newErrors.phone = "Enter a valid 9-digit phone number";
+    if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.secretKey.trim()) newErrors.secretKey = "Admin secret key is required";
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setLoading(true);
+    setServerError("");
+
+    try {
+      await adminSignup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        secretKey: formData.secretKey,
+      });
+      showToast("Admin account created successfully! Please login.", "success");
+      onSwitchToLogin();
+    } catch (err) {
+      const message =
+        err.response?.data?.error || "Something went wrong. Please try again.";
+      setServerError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const strength = getPasswordStrength(formData.password);
+
+  return (
+    <form className="auth-modal-form" onSubmit={handleSubmit}>
+      {serverError && <div className="auth-modal-error">{serverError}</div>}
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-name">Full Name</label>
+        <input
+          type="text"
+          id="admin-name"
+          name="name"
+          placeholder="Your full name"
+          value={formData.name}
+          onChange={handleChange}
+          autoComplete="name"
+        />
+        {errors.name && <span className="auth-modal-field-error">{errors.name}</span>}
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-reg-email">Email</label>
+        <input
+          type="email"
+          id="admin-reg-email"
+          name="email"
+          placeholder="you@example.com"
+          value={formData.email}
+          onChange={handleChange}
+          autoComplete="email"
+        />
+        {errors.email && <span className="auth-modal-field-error">{errors.email}</span>}
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-phone">Phone</label>
+        <input
+          type="tel"
+          id="admin-phone"
+          name="phone"
+          placeholder="9-digit number"
+          value={formData.phone}
+          onChange={handleChange}
+          autoComplete="tel"
+        />
+        {errors.phone && <span className="auth-modal-field-error">{errors.phone}</span>}
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-password-reg">Password</label>
+        <div className="auth-modal-password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="admin-password-reg"
+            name="password"
+            placeholder="Minimum 6 characters"
+            value={formData.password}
+            onChange={handleChange}
+            onPaste={(e) => e.preventDefault()}
+            onCopy={(e) => e.preventDefault()}
+            autoComplete="new-password"
+          />
+          <button
+            type="button"
+            className="auth-modal-toggle"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        {formData.password && (
+          <div className="auth-modal-strength">
+            <div className="auth-modal-strength-bar">
+              <div
+                className="auth-modal-strength-fill"
+                style={{
+                  width: `${(strength.level / 4) * 100}%`,
+                  backgroundColor: strength.color,
+                }}
+              ></div>
+            </div>
+            <span className="auth-modal-strength-label" style={{ color: strength.color }}>
+              {strength.label}
+            </span>
+          </div>
+        )}
+        {errors.password && <span className="auth-modal-field-error">{errors.password}</span>}
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="admin-confirmPassword"
+          name="confirmPassword"
+          placeholder="Re-enter your password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          onPaste={(e) => e.preventDefault()}
+          onCopy={(e) => e.preventDefault()}
+          autoComplete="new-password"
+        />
+        {errors.confirmPassword && (
+          <span className="auth-modal-field-error">{errors.confirmPassword}</span>
+        )}
+      </div>
+
+      <div className="auth-modal-field">
+        <label htmlFor="admin-secretKey">Admin Secret Key</label>
+        <input
+          type="password"
+          id="admin-secretKey"
+          name="secretKey"
+          placeholder="Enter admin secret key"
+          value={formData.secretKey}
+          onChange={handleChange}
+        />
+        {errors.secretKey && <span className="auth-modal-field-error">{errors.secretKey}</span>}
+      </div>
+
+      <button
+        type="submit"
+        className="btn-primary auth-modal-submit"
+        disabled={loading}
+      >
+        {loading ? <span className="btn-spinner"></span> : "Create Admin Account"}
+      </button>
+
+      <p className="auth-modal-switch">
+        Already have an admin account?{" "}
+        <button type="button" className="auth-modal-switch-btn" onClick={onSwitchToLogin}>
+          Admin Login
+        </button>
+      </p>
+    </form>
+  );
+}
+
 function AuthModal() {
   const { authModalView, closeAuthModal, openAuthModal } = useAuth();
   const modalRef = useRef(null);
@@ -486,6 +811,8 @@ function AuthModal() {
       {authModalView === "login" && <h1>Login</h1>}
       {authModalView === "register" && <h1>Register</h1>}
       {authModalView === "forgot" && <h1>Forgot Password</h1>}
+      {authModalView === "admin-login" && <h1>Admin Login</h1>}
+      {authModalView === "admin-register" && <h1>Admin Register</h1>}
 
         {authModalView === "login" && (
           <LoginForm
@@ -498,6 +825,12 @@ function AuthModal() {
         )}
         {authModalView === "forgot" && (
           <ForgotPasswordForm onSwitchToLogin={() => openAuthModal("login")} />
+        )}
+        {authModalView === "admin-login" && (
+          <AdminLoginForm onSwitchToRegister={() => openAuthModal("admin-register")} />
+        )}
+        {authModalView === "admin-register" && (
+          <AdminRegisterForm onSwitchToLogin={() => openAuthModal("admin-login")} />
         )}
       </div>
     </div>
