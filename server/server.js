@@ -2,6 +2,14 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+// Validate required env vars
+const requiredEnvVars = ["CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET", "JWT_SECRET", "MONGODB_URI"];
+const missingVars = requiredEnvVars.filter(v => !process.env[v]);
+if (missingVars.length > 0) {
+  console.error(`❌ Missing required environment variables: ${missingVars.join(", ")}`);
+  process.exit(1);
+}
+
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 const propertyRoutes = require("./routes/propertyRoutes");

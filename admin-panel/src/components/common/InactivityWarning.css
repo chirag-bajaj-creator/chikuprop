@@ -1,0 +1,114 @@
+.inactivity-warning__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.inactivity-warning__modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.inactivity-warning__header {
+  padding: 20px;
+  border-bottom: 2px solid var(--neutral-light);
+}
+
+.inactivity-warning__header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #e53e3e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.inactivity-warning__content {
+  padding: 20px;
+}
+
+.inactivity-warning__content p {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--neutral-dark);
+}
+
+.inactivity-warning__content p:last-child {
+  margin-bottom: 0;
+}
+
+.inactivity-warning__hint {
+  font-size: 13px;
+  color: var(--neutral-medium);
+  font-style: italic;
+}
+
+.inactivity-warning__actions {
+  padding: 16px 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  border-top: 2px solid var(--neutral-light);
+}
+
+.inactivity-warning__btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-button);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.inactivity-warning__btn--primary {
+  background: var(--gradient-button);
+  color: var(--white);
+}
+
+.inactivity-warning__btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+@media (max-width: 480px) {
+  .inactivity-warning__modal {
+    width: 95%;
+  }
+
+  .inactivity-warning__header h2 {
+    font-size: 16px;
+  }
+
+  .inactivity-warning__content p {
+    font-size: 14px;
+  }
+
+  .inactivity-warning__btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

@@ -134,6 +134,11 @@ const updateAvatar = async (req, res) => {
       return res.status(400).json({ success: false, error: "An image file is required" });
     }
 
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error("❌ Cloudinary env vars not configured");
+      return res.status(500).json({ success: false, error: "Upload service is not properly configured" });
+    }
+
     const result = await uploadToCloudinary(req.file.buffer, {
       folder: "chikuprop/avatars",
       resource_type: "image",
@@ -147,7 +152,7 @@ const updateAvatar = async (req, res) => {
       data: { avatar: result.secure_url },
     });
   } catch (error) {
-    console.error("Avatar upload error:", error);
+    console.error("Avatar upload error:", error.message || error);
     res.status(500).json({ success: false, error: "Avatar upload failed. Please try again." });
   }
 };

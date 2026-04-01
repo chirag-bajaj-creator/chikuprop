@@ -12,6 +12,7 @@ import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
 import AdminLayout from "./components/admin/AdminLayout";
 import Loader from "./components/common/Loader";
 import AuthModal from "./components/auth/AuthModal";
+import InactivityWarning from "./components/common/InactivityWarning";
 import "./App.css";
 
 function ProtectedDashboard() {
@@ -72,6 +73,7 @@ function App() {
         <ToastProvider>
           <AppRoutes />
           <AuthModal />
+          <InactivityWarning />
         </ToastProvider>
       </AuthProvider>
     </BrowserRouter>

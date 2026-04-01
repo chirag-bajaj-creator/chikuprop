@@ -1,8 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser, getCurrentUser, adminSignup as adminSignupAPI } from "../services/authService";
 
 const TOKEN_KEY = "chikuprop_token";
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+const WARNING_TIME = 5 * 60 * 1000; // Show warning 5 min before logout
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -12,6 +14,9 @@ export function AuthProvider({ children }) {
   const [authModalView, setAuthModalView] = useState(null); // null | "login" | "register" | "forgot" | "admin-login" | "admin-register" | "admin-forgot"
   const [intendedPath, setIntendedPath] = useState(null);
   const [isAdminMode, setIsAdminMode] = useState(localStorage.getItem("admin_mode") === "true");
+  const [showInactivityWarning, setShowInactivityWarning] = useState(false);
+  const inactivityTimeoutRef = useRef(null);
+  const warningTimeoutRef = useRef(null);
   const navigate = useNavigate();
 
   const openAuthModal = useCallback((view = "login", path = null) => {
@@ -103,6 +108,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(() => {
+    // Clear inactivity timers
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
+    if (warningTimeoutRef.current) clearTimeout(warningTimeoutRef.current);
+    setShowInactivityWarning(false);
+
     const isAdmin = user?.role === "admin";
     localStorage.removeItem(TOKEN_KEY);
     setUser(null);
@@ -110,7 +120,56 @@ export function AuthProvider({ children }) {
     navigate(isAdmin ? "/admin/login" : "/");
   }, [navigate, user]);
 
-  const value = { user, token, loading, login, register, adminSignup, logout, refreshUser, authModalView, openAuthModal, closeAuthModal, intendedPath, setIntendedPath, isAdminMode, setIsAdminMode };
+  // Reset inactivity timer on user activity
+  const resetInactivityTimer = useCallback(() => {
+    if (!token) return; // Only track if logged in
+
+    // Clear existing timers
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
+    if (warningTimeoutRef.current) clearTimeout(warningTimeoutRef.current);
+    setShowInactivityWarning(false);
+
+    // Set warning timer (show at 25 minutes)
+    warningTimeoutRef.current = setTimeout(() => {
+      setShowInactivityWarning(true);
+    }, INACTIVITY_TIMEOUT - WARNING_TIME);
+
+    // Set logout timer (logout at 30 minutes)
+    inactivityTimeoutRef.current = setTimeout(() => {
+      logout();
+    }, INACTIVITY_TIMEOUT);
+  }, [token, logout]);
+
+  // Set up activity listeners when user is logged in
+  useEffect(() => {
+    if (!token) {
+      // Clear timers if logged out
+      if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
+      if (warningTimeoutRef.current) clearTimeout(warningTimeoutRef.current);
+      return;
+    }
+
+    // Initialize timer on login
+    resetInactivityTimer();
+
+    // Activity event listeners
+    const activityEvents = ["click", "keypress", "mousemove", "scroll", "touchstart"];
+    const handleActivity = () => resetInactivityTimer();
+
+    activityEvents.forEach(event => {
+      window.addEventListener(event, handleActivity);
+    });
+
+    return () => {
+      activityEvents.forEach(event => {
+        window.removeEventListener(event, handleActivity);
+      });
+      if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current);
+      if (warningTimeoutRef.current) clearTimeout(warningTimeoutRef.current);
+    };
+  }, [token, resetInactivityTimer]);
+
+  const value = { user, token, loading, login, register, adminSignup, logout, refreshUser, authModalView, openAuthModal, closeAuthModal, intendedPath, setIntendedPath, isAdminMode, setIsAdminMode, showInactivityWarning, setShowInactivityWarning, resetInactivityTimer };
 
   return (
     <AuthContext.Provider value={value}>

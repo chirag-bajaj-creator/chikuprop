@@ -23,6 +23,7 @@ import GrievancesPage from "./pages/GrievancesPage";
 import GrievanceWidget from "./components/common/GrievanceWidget";
 import NotFoundPage from "./pages/NotFoundPage";
 import AuthModal from "./components/auth/AuthModal";
+import InactivityWarning from "./components/common/InactivityWarning";
 import "./App.css";
 
 function AppRoutes() {
@@ -62,6 +63,7 @@ function AppRoutes() {
       {location.pathname === "/" && <GrievanceWidget />}
       <Footer />
       <AuthModal />
+      <InactivityWarning />
     </>
   );
 }

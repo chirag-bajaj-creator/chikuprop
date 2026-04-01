@@ -136,13 +136,23 @@ function SearchBar() {
         {showSuggestions && hasSuggestions && (
           <ul className="search-suggestions">
             {suggestions.cities.map((c) => (
-              <li key={`city-${c.city}`} className="search-suggestion-item" onClick={() => handleCitySelect(c.city)}>
+              <li
+                key={`city-${c.city}`}
+                className="search-suggestion-item city-item"
+                onClick={() => handleCitySelect(c.city)}
+              >
                 <span className="suggestion-name">{c.city}</span>
+                <span className="suggestion-tag city-tag">City</span>
               </li>
             ))}
             {suggestions.localities.map((l) => (
-              <li key={`area-${l.area}-${l.city}`} className="search-suggestion-item" onClick={() => handleAreaSelect(l.area, l.city)}>
+              <li
+                key={`area-${l.area}-${l.city}`}
+                className="search-suggestion-item area-item"
+                onClick={() => handleAreaSelect(l.area, l.city)}
+              >
                 <span className="suggestion-name">{l.area}</span>
+                <span className="suggestion-tag area-tag">{l.city}</span>
               </li>
             ))}
           </ul>

@@ -127,6 +127,53 @@
   text-align:left;
 }
 
+/* City/Area tag badges */
+.suggestion-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-hard);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.city-tag {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: var(--white);
+}
+
+.area-tag {
+  background: var(--neutral-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Ensure item layout handles tag properly */
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.search-suggestion-item.city-item:hover {
+  background: rgba(147, 51, 234, 0.1);
+}
+
+.search-suggestion-item.area-item:hover {
+  background: var(--secondary);
+}
+
+@media (max-width: 480px) {
+  .suggestion-tag {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .search-bar {
     max-width: 100%;

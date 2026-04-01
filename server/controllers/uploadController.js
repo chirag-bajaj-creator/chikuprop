@@ -20,6 +20,11 @@ const uploadImages = async (req, res) => {
         .json({ success: false, error: "At least one image is required" });
     }
 
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error("❌ Cloudinary env vars not configured");
+      return res.status(500).json({ success: false, error: "Upload service is not properly configured" });
+    }
+
     const uploadPromises = req.files.map((file) =>
       uploadToCloudinary(file.buffer, {
         folder: "chikuprop/properties",
@@ -32,7 +37,7 @@ const uploadImages = async (req, res) => {
 
     res.status(200).json({ success: true, data: { urls } });
   } catch (error) {
-    console.error("Image upload error:", error);
+    console.error("Image upload error:", error.message || error);
     res
       .status(500)
       .json({ success: false, error: "Image upload failed. Please try again." });
@@ -48,6 +53,11 @@ const uploadVideo = async (req, res) => {
         .json({ success: false, error: "A video file is required" });
     }
 
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error("❌ Cloudinary env vars not configured");
+      return res.status(500).json({ success: false, error: "Upload service is not properly configured" });
+    }
+
     const result = await uploadToCloudinary(req.file.buffer, {
       folder: "chikuprop/properties",
       resource_type: "video",
@@ -55,7 +65,7 @@ const uploadVideo = async (req, res) => {
 
     res.status(200).json({ success: true, data: { url: result.secure_url } });
   } catch (error) {
-    console.error("Video upload error:", error);
+    console.error("Video upload error:", error.message || error);
     res
       .status(500)
       .json({ success: false, error: "Video upload failed. Please try again." });
