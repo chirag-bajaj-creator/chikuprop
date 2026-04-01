@@ -102,6 +102,9 @@ function PropertyCard({ property, viewMode = "grid", isSaved = false, onToggleSa
 
         <div className="property-card__footer">
           <span className="property-card__tag">{propertyType}</span>
+          <span className="property-card__city-tag">
+            <FiMapPin size={11} /> {propLocation.city}
+          </span>
           <span className="property-card__views">
             <FiEye size={14} /> {viewCount}
           </span>
