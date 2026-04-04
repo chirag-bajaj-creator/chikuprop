@@ -70,7 +70,9 @@ function AdminLoginPage() {
 
     try {
       const data = await login(formData.email, formData.password);
-      if (data.role !== "admin") {
+      console.log("Login response:", data);
+      if (!data || data.role !== "admin") {
+        console.error("Not admin. Received data:", data);
         setError("Access denied — admin only");
         setLoading(false);
         return;
@@ -78,6 +80,7 @@ function AdminLoginPage() {
       showToast("Welcome to the Admin Panel", "success");
       navigate("/admin/dashboard", { replace: true, state: { accessGranted: true } });
     } catch (err) {
+      console.error("Login error:", err);
       const message = err.response?.data?.error || "Invalid credentials. Please try again.";
       setError(message);
     } finally {
