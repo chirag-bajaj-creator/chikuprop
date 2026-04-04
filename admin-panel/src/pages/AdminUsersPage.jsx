@@ -34,10 +34,9 @@ function AdminUsersPage() {
         limit: USERS_PER_PAGE,
         search: searchQuery || undefined,
       });
-      const data = response.data;
-      setUsers(data.data || []);
-      setTotalPages(data.totalPages || 1);
-      setTotalUsers(data.total || 0);
+      setUsers(response.data || []);
+      setTotalPages(response.pagination?.pages || 1);
+      setTotalUsers(response.pagination?.total || 0);
     } catch (err) {
       const message = err.response?.data?.error || "Failed to load users";
       setError(message);
@@ -59,10 +58,9 @@ function AdminUsersPage() {
           search: search || undefined,
         });
         if (!cancelled) {
-          const data = response.data;
-          setUsers(data.data || []);
-          setTotalPages(data.totalPages || 1);
-          setTotalUsers(data.total || 0);
+          setUsers(response.data || []);
+          setTotalPages(response.pagination?.pages || 1);
+          setTotalUsers(response.pagination?.total || 0);
         }
       } catch (err) {
         if (!cancelled) {
