@@ -93,6 +93,11 @@ const login = async (req, res) => {
       return res.status(401).json({ success: false, error: "Invalid email or password" });
     }
 
+    // Check if user is blocked
+    if (user.isBlocked) {
+      return res.status(403).json({ success: false, error: "Account blocked — contact support@chikuprop.com for assistance" });
+    }
+
     const token = generateToken(user._id);
 
     res.status(200).json({
