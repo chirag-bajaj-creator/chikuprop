@@ -66,7 +66,6 @@ function LoginPage() {
         showToast("Admin accounts must use the admin login panel.", "error");
         return;
       }
-      showToast("Login successful! Welcome back.", "success");
       // Navigation handled by useEffect when user state updates
     } catch (err) {
       const message =
