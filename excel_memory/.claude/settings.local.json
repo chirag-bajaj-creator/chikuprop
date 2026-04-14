@@ -1,0 +1,10 @@
+{
+  "disabledMcpjsonServers": [
+    "code-review-graph"
+  ],
+  "permissions": {
+    "allow": [
+      "mcp__excel-memory__add_memory"
+    ]
+  }
+}

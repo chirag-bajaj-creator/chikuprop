@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "excel-memory": {
+      "command": "python",
+      "args": [
+        "C:\\Users\\CHIRAG BAJAJ\\OneDrive\\AppData\\Desktop\\Hravinder_Agent\\excel_memory\\memory_server.py"
+      ]
+    }
+  }
+}

@@ -42,6 +42,8 @@ const allowedOrigins = [
   "http://localhost:3001",
 ].filter(Boolean);
 
+// If your Vercel domain changes, add it above for CORS
+
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, Postman, etc.)
